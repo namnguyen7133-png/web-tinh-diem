@@ -1,0 +1,596 @@
+viết mã python
+ô nhập danh sách Tên người
+ô nhập tuổi tác ngày sinh
+ô nhập chiều cao
+ô nhập cân nặng
+ô nhập giới tính
+
+
+bảng danh sách các việc làm tương ứng với tuổi chiều cao cân nặng điểm tương ứng
+nếu trùng nhau thì chia giờ làm sáng , giờ làm chiều
+
+Dưới đây là nội dung văn bản được chuyển từ hình ảnh:
+
+
+CÁCH TÍNH ĐIỂM CHO TRẺ GIÚP VIỆC NHÀ
+
+
+
+
+
+Chế độ thưởng:
+
+
+
+Quét nhà: 5. Điểm 
+
+
+Thu quần áo: 10. Điểm 
+
+
+Dọn ghế sofa: 5. Điểm 
+
+
+Đổ rác: 5. Điểm 
+
+
+Lau bàn: 5. Điểm 
+
+
+Thu dọn giường: 5. Điểm 
+
+
+Lấy hàng chuyển phát: 10. Điểm 
+
+
+Giặt tất: 5. Điểm 
+
+
+Sắp xếp giày dép: 5. Điểm 
+
+
+Thu dọn đồ chơi: 5. Điểm 
+
+
+Không kén ăn: 5. Điểm 
+
+
+Phơi quần áo: 5. Điểm 
+
+
+Lau nhà: 5. Điểm 
+
+
+Rửa bát: 10. Điểm 
+
+
+Chạy việc/làm việc vặt: 5. Điểm 
+
+
+Tự giác hoàn thành bài tập: 15. Điểm 
+
+
+Mỗi ngày nhảy dây/luyện bóng: 15. Điểm 
+
+
+Duy trì tất cả những việc trên trong 1 tuần: thưởng thêm 25. Điểm 
+
+
+
+
+Chế độ phạt:
+
+
+
+Nổi nóng: trừ 10. Điểm 
+
+
+Trì hoãn: trừ 10. Điểm 
+
+
+Nói dối: trừ 10. Điểm 
+
+
+Cãi lại: trừ 10. Điểm 
+
+
+
+
+Các khoản phải tự trả:
+
+
+
+Điện thoại: 25. Điểm/giờ 
+
+
+Xem TV: 25. Điểm/giờ
+
+
+
+ô nhập tính giờ chơi thời gian bắt đầu, thời gian kết thúc ra điểm số đã chơi trước
+ô nhập việc đã làm bấm theo danh sách tính ra điểm số được chơi
+
+bảng ghi các  việc đã làm các giờ đã chơi
+
+Dưới đây là bảng quy đổi chi phí dịch sang **điểm** (với quy ước **1.000 VNĐ = 1 điểm**).
+
+---
+
+## Bảng quy đổi chi phí chăm sóc theo điểm (Cơ sở 18.000 điểm / tháng)
+
+### 1. Quy đổi theo nhóm công việc (% tổng 18.000 điểm/tháng)
+
+| Nhóm công việc | Chi tiết công việc | Tỷ lệ (%) | Mức điểm / tháng |
+| --- | --- | --- | --- |
+| **Vệ sinh cá nhân** | Lau người, thay quần áo, thay tã/bỉm, dọn dẹp vệ sinh | 30% | **5.400 điểm** |
+| **Y tế & Bác sĩ** | Cho uống thuốc đúng giờ, đo huyết áp, theo dõi sức khỏe, báo bác sĩ | 25% | **4.500 điểm** |
+| **Ăn uống & Dinh dưỡng** | Nấu đồ ăn mềm/bổ dưỡng, đút cơm/cháo, cho uống nước | 20% | **3.600 điểm** |
+| **Đi chợ & Mua sắm** | Đi mua thuốc men, mua thức ăn bồi bổ sức khỏe | 15% | **2.700 điểm** |
+| **Chăm sóc tinh thần** | Hỏi thăm, trò chuyện, túc trực bên cạnh người bệnh | 10% | **1.800 điểm** |
+| **TỔNG CỘNG** | **Trọn gói chăm sóc toàn diện (30 ngày)** | **100%** | **18.000 điểm** |
+
+---
+
+### 2. Quy đổi theo ca làm việc / Công nhật
+
+| Hình thức làm việc | Thời gian / Chi tiết | Mức điểm quy đổi |
+| --- | --- | --- |
+| **Ca ngày (Toàn thời gian)** | 8 – 12 tiếng / ngày | **500 – 600 điểm / ngày** |
+| **Ca đêm (Trông nom)** | Thức đêm, hỗ trợ khi người bệnh cần | **700 – 800 điểm / đêm** |
+| **Chia ca theo giờ** | Thuê theo giờ lẻ (3 – 4 tiếng) | **60 – 80 điểm / giờ** |
+
+---
+
+### 3. Quy đổi theo từng đầu việc lẻ (Làm theo lượt)
+
+| Đầu việc lẻ | Chi tiết | Mức điểm / lần |
+| --- | --- | --- |
+| **Lau người & Thay quần áo** | Vệ sinh cơ thể tại giường, thay đồ sạch | **80 – 120 điểm / lần** |
+| **Đút cơm / Cho ăn** | Hỗ trợ ăn hết bữa cháo/cơm, uống nước | **30 – 50 điểm / bữa** |
+| **Mua hộ thuốc / Mua đồ bổ** | Công đi lại mua đồ (không gồm tiền hàng) | **30 – 50 điểm / lượt** |
+| **Hỏi thăm, túc trực** | Trò chuyện, ngồi canh người bệnh | *Tính chung vào giờ làm* |
+
+Dưới đây là bảng quy đổi mức giá dịch vụ **dọn vệ sinh công nghiệp** sang **điểm** (với quy ước **1.000 VNĐ = 1 điểm**), tính theo mét vuông ($m^2$) và theo giờ để bạn dễ tham khảo:
+
+---
+
+## 1. Mức giá tính theo Mét vuông ($m^2$)
+
+Phương pháp này thường áp dụng cho tổng vệ sinh sau xây dựng, vệ sinh nhà mới sửa, hoặc dọn dẹp định kỳ diện tích lớn.
+
+| Loại hình dịch vụ | Chi tiết công việc | Mức điểm / $m^2$ |
+| --- | --- | --- |
+| **Tổng vệ sinh sau xây dựng / sửa chữa** | Hút bụi, tẩy vết sơn, xi măng, lau kính, làm sạch sàn toàn bộ nhà | **15 – 25 điểm / $m^2$** |
+| **Tổng vệ sinh nhà đang ở (Định kỳ)** | Hút bụi, lau sàn, dọn bếp, lau nhà vệ sinh, lau nội thất | **10 – 18 điểm / $m^2$** |
+| **Vệ sinh văn phòng / Tòa nhà lớn** | Làm sạch mặt sàn diện tích rộng ($> 200m^2$) | **8 – 12 điểm / $m^2$** |
+| **Giặt thảm / Giặt sofa (Dịch vụ kèm)** | Giặt thảm trải sàn văn phòng/nhà ở | **10 – 15 điểm / $m^2$** |
+
+*Ví dụ:* Căn nhà $100m^2$ tổng vệ sinh sau xây dựng sẽ hết khoảng **1.500 – 2.500 điểm** (tương đương 1,5 – 2,5 triệu VNĐ).
+
+---
+
+## 2. Mức giá tính theo Giờ
+
+Phương pháp này áp dụng khi thuê nhân công lẻ, dọn dẹp nhà cửa theo ca ngắn hoặc khối lượng công việc không cố định.
+
+| Hình thức thuê | Chi tiết | Mức điểm / giờ |
+| --- | --- | --- |
+| **Dọn dẹp theo giờ lẻ (Ca 2 – 4 tiếng)** | Mang theo dụng cụ cơ bản (chổi, lau nhà, hóa chất nhẹ) | **60 – 90 điểm / giờ / người** |
+| **Dọn vệ sinh công nghiệp chuyên sâu** | Có máy hút bụi công nghiệp, máy đánh sàn, hóa chất tẩy rửa mạnh | **90 – 130 điểm / giờ / người** |
+| **Thuê theo ca cố định hàng tháng** | Dọn dẹp định kỳ tuần 2–3 buổi (mỗi buổi 3–4 tiếng) | **50 – 70 điểm / giờ** |
+
+Dưới đây là bảng quy đổi mức lương tham khảo của các nhóm nghề nghiệp tại Việt Nam sang **hệ thống điểm** với tỉ lệ: **1.000 VNĐ = 1 điểm** (ví dụ: lương 10.000.000 VNĐ = 10.000 điểm).
+
+---
+
+## 1. Khối Cơ quan Nhà nước & Nhân viên Văn phòng Nhà nước
+
+> *Mức lương công chức/viên chức nhà nước phụ thuộc vào hệ số lương, phụ cấp chức vụ, phụ cấp thâm niên và các khoản đóng góp. Dưới đây là thu nhập thực nhận trung bình hàng tháng (đã tính phụ cấp).*
+
+| Vị trí / Chức danh | Mức lương thực nhận trung bình (VNĐ/tháng) | Quy đổi Điểm (1.000đ = 1 điểm) |
+| --- | --- | --- |
+| **Cán bộ cấp Chuyên viên / Nhân viên văn phòng** | **6.000.000 – 12.000.000** | **6.000 – 12.000 điểm** |
+| **Chuyên viên chính / Phó Trưởng phòng** | **10.000.000 – 16.000.000** | **10.000 – 16.000 điểm** |
+| **Trưởng phòng / Giám đốc Trung tâm/Sở chuyên môn** | **15.000.000 – 25.000.000** | **15.000 – 25.000 điểm** |
+| **Lãnh đạo Cục / Vụ / Viện** | **20.000.000 – 35.000.000** | **20.000 – 35.000 điểm** |
+
+---
+
+## 2. Khối Giáo dục (Giảng viên Đại học, Giáo viên các cấp)
+
+> *Thu nhập khối giáo dục công lập phụ thuộc vào hệ số + phụ cấp đứng lớp + dạy thêm/thâm niên. Khối dân lập/tư thục/quốc tế theo thỏa thuận hợp đồng.*
+
+| Vị trí / Chức danh | Mức thu nhập hàng tháng (VNĐ) | Quy đổi Điểm (1.000đ = 1 điểm) |
+| --- | --- | --- |
+| **Giáo viên Mầm non / Tiểu học (Công lập)** | **6.000.000 – 11.000.000** | **6.000 – 11.000 điểm** |
+| **Giáo viên THCS / THPT (Công lập)** | **7.000.000 – 14.000.000** | **7.000 – 14.000 điểm** |
+| **Giáo viên Trường Tư thục / Quốc tế** | **12.000.000 – 35.000.000+** | **12.000 – 35.000+ điểm** |
+| **Giảng viên Đại học Công lập** | **9.000.000 – 20.000.000** | **9.000 – 20.000 điểm** |
+| **Giảng viên Đại học Tư thục / PGS - Giáo sư** | **20.000.000 – 50.000.000+** | **20.000 – 50.000+ điểm** |
+
+---
+
+## 3. Khối Công ty / Tập đoàn Trong nước (Doanh nghiệp Tư nhân & Tổng công ty)
+
+> *Lương khối doanh nghiệp phụ thuộc nhiều vào quy mô công ty, ngành nghề (IT, Tài chính, Bất động sản...) và kết quả kinh doanh.*
+
+| Vị trí / Chức danh | Mức lương trung bình (VNĐ/tháng) | Quy đổi Điểm (1.000đ = 1 điểm) |
+| --- | --- | --- |
+| **Nhân viên Mới tốt nghiệp / Thực tập sinh** | **6.000.000 – 10.000.000** | **6.000 – 10.000 điểm** |
+| **Nhân viên Văn phòng / Chuyên viên (1–3 năm KN)** | **9.000.000 – 16.000.000** | **9.000 – 16.000 điểm** |
+| **Trưởng nhóm (Team Leader) / Supervisor** | **15.000.000 – 28.000.000** | **15.000 – 28.000 điểm** |
+| **Trưởng phòng / Quản lý Bộ phận** | **25.000.000 – 50.000.000** | **25.000 – 50.000 điểm** |
+| **Giám đốc Khối / Giám đốc Chi nhánh** | **50.000.000 – 100.000.000+** | **50.000 – 100.000+ điểm** |
+
+---
+
+## 4. Khối Tập đoàn Nước ngoài / Công ty Đa quốc gia (MNCs)
+
+> *Doanh nghiệp FDI / Đa quốc gia áp dụng mặt bằng lương cao hơn, đi kèm yêu cầu khắt khe về ngoại ngữ và kỹ năng chuyên môn.*
+
+| Vị trí / Chức danh | Mức lương trung bình (VNĐ/tháng) | Quy đổi Điểm (1.000đ = 1 điểm) |
+| --- | --- | --- |
+| **Chuyên viên / Nhân viên kinh nghiệm (Junior - Mid)** | **15.000.000 – 30.000.000** | **15.000 – 30.000 điểm** |
+| **Chuyên viên cao cấp (Senior Specialist / Lead)** | **30.000.000 – 60.000.000** | **30.000 – 60.000 điểm** |
+| **Trưởng phòng / Quản lý cấp trung (Manager)** | **50.000.000 – 100.000.000** | **50.000 – 100.000 điểm** |
+| **Giám đốc Bộ phận / Giám đốc Khu vực (Director / C-Level)** | **100.000.000 – 250.000.000+** | **100.000 – 250.000+ điểm** |
+
+---
+Dưới đây là bảng quy đổi toàn bộ danh sách mức lương/tiền công các ngành Quản lý tòa nhà, Bán lẻ & Nhập hàng, Chăm sóc thú cưng sang **hệ thống điểm** với tỉ lệ **1.000 VNĐ = 1 điểm** (ví dụ: 6.000.000 VNĐ = 6.000 điểm).
+
+---
+
+## 1. Nghề Quản lý tòa nhà & Các công việc liên quan
+
+| Vị trí / Chức danh | Mức lương phổ biến (VNĐ/tháng) | Quy đổi Điểm (1.000đ = 1 điểm) | Mô tả công việc |
+| --- | --- | --- | --- |
+| **Trưởng ban Quản lý tòa nhà** | 20.000.000 – 40.000.000+ | **20.000 – 40.000+ điểm** | Điều hành toàn bộ tòa nhà/chung cư, quản lý ngân sách, đối ngoại, giải quyết sự cố phức tạp. |
+| **Giám sát Kỹ thuật tòa nhà** | 12.000.000 – 20.000.000 | **12.000 – 20.000 điểm** | Quản lý hệ thống điện, nước, PCCC, thang máy; chỉ đạo đội kỹ thuật. |
+| **Nhân viên Kỹ thuật tòa nhà** | 8.000.000 – 13.000.000 | **8.000 – 13.000 điểm** | Bảo trì, sửa chữa điện nước sinh hoạt, vận hành máy móc hàng ngày. |
+| **Nhân viên Lễ tân / Chăm sóc cư dân** | 7.000.000 – 11.000.000 | **7.000 – 11.000 điểm** | Đón tiếp khách, tiếp nhận ý kiến/khiếu nại của cư dân, xử lý thủ tục hành chính. |
+| **Nhân viên An ninh / Bảo vệ tòa nhà** | 6.000.000 – 9.000.000 | **6.000 – 9.000 điểm** | Tuần tra, giữ gìn trật tự, trông giữ xe (ca 8–12 tiếng). |
+| **Nhân viên Vệ sinh / Buồng phòng** | 6.000.000 – 8.500.000 | **6.000 – 8.500 điểm** | Dọn dẹp khu vực chung, hành lang, sảnh tòa nhà. |
+
+---
+
+## 2. Nghề Mua sắm bán lẻ, Người bán hàng & Người nhập hàng
+
+| Vị trí / Chức danh | Mức lương phổ biến (VNĐ/tháng) | Quy đổi Điểm (1.000đ = 1 điểm) | Mô tả & Thu nhập bổ sung |
+| --- | --- | --- | --- |
+| **Nhân viên Bán hàng (Retail Sales)** | 6.000.000 – 12.000.000 | **6.000 – 12.000 điểm** | Lương cứng (5.000 – 7.000 điểm) + hoa hồng bán hàng. |
+| **Cửa hàng trưởng (Store Manager)** | 12.000.000 – 25.000.000 | **12.000 – 25.000 điểm** | Quản lý doanh số, nhân sự, hàng hóa của 1 cửa hàng/chi nhánh. |
+| **Nhân viên Nhập hàng / Mua hàng** | 9.000.000 – 16.000.000 | **9.000 – 16.000 điểm** | Tìm kiếm nhà cung cấp, đàm phán giá, làm thủ tục nhập hàng, hợp đồng. |
+| **Trưởng phòng Mua hàng** | 20.000.000 – 35.000.000+ | **20.000 – 35.000+ điểm** | Quản lý chiến lược cung ứng, tối ưu chi phí nhập hàng. |
+| **Nhân viên Quản lý Kho (Storekeeper)** | 7.500.000 – 12.000.000 | **7.500 – 12.000 điểm** | Kiểm kê, nhập - xuất hàng, bảo quản hàng hóa trong kho. |
+| **Nhân viên Đóng gói & Thu ngân** | 6.000.000 – 9.000.000 | **6.000 – 9.000 điểm** | Tính tiền, đóng gói hàng hóa tại quầy. |
+
+---
+
+## 3. Nghề Chăm sóc thú cưng (Pet Care / Grooming) & Các việc liên quan
+
+| Vị trí / Chức danh | Mức lương phổ biến | Quy đổi Điểm (1.000đ = 1 điểm) | Mô tả công việc |
+| --- | --- | --- | --- |
+| **Thợ Cắt tỉa / Groomer (Lành nghề)** | 10.000.000 – 22.000.000+ VNĐ/tháng | **10.000 – 22.000+ điểm/tháng** | Cắt tỉa lông, tạo kiểu, tắm spa cho thú cưng. |
+| **Nhân viên Tắm rửa / Phụ việc Spa Pet** | 6.000.000 – 9.000.000 VNĐ/tháng | **6.000 – 9.000 điểm/tháng** | Tắm, sấy, vệ sinh tai/móng cơ bản cho chó mèo. |
+| **Nhân viên Bán hàng Pet Shop** | 6.500.000 – 10.000.000 VNĐ/tháng | **6.500 – 10.000 điểm/tháng** | Tư vấn thức ăn, phụ kiện, chăm sóc khách hàng ghé shop. |
+| **Bác sĩ Thú y (Pet Clinic)** | 12.000.000 – 25.000.000+ VNĐ/tháng | **12.000 – 25.000+ điểm/tháng** | Chẩn đoán, khám chữa bệnh, phẫu thuật, tiêm phòng. |
+| **Điều dưỡng / Y tá Thú y** | 7.000.000 – 11.000.000 VNĐ/tháng | **7.000 – 11.000 điểm/tháng** | Hỗ trợ bác sĩ giữ thú cưng, chăm sóc pet lưu chuồng. |
+| **Khách sạn thú cưng / Pet Sitter** | 200.000 – 500.000 VNĐ/ngày <br>
+
+<br> *(7–10 triệu VNĐ/tháng)* | **200 – 500 điểm/ngày** <br>
+
+<br> *(7.000 – 10.000 điểm/tháng)* | Chăm sóc, cho ăn, dắt thú cưng đi dạo khi chủ vắng nhà. |
+
+---
+
+## 4. Các mức công việc theo giờ / bán thời gian
+
+* **Mức tiền công theo giờ:** 22.000 – 40.000 VNĐ/giờ $\rightarrow$ **22 – 40 điểm/giờ**
+
+Bạn có cần điều chỉnh hay bổ sung vị trí công việc nào khác nữa không?
+
+Bạn có muốn tính toán chi tiết hơn cho một ngành nghề hoặc hệ số lương cụ thể nào không?
+
+---
+
+## 3. Các yếu tố ảnh hưởng đến mức điểm
+
+* **Độ bẩn của công trình:** Nhà mới xây nhiều vết xi măng/sơn đọng lại sẽ tính mức điểm cao hơn nhà ở bình thường.
+* **Trang thiết bị:** Dùng máy đánh sàn chuyên dụng, máy hút công nghiệp, thang đu lau kính mặt ngoài sẽ có phụ phí thiết bị.
+* **Diện tích:** Diện tích càng lớn thì đơn giá trên mỗi $m^2$ càng giảm.
+
+Hãy viết cho tôi một ứng dụng web đơn giản bằng HTML, CSS (TailwindCSS hoặc CSS thuần) và JavaScript thuần (Vanilla JS) trên một tệp HTML duy nhất để quản lý phân công việc, ghi nhận công việc và quy đổi/tính điểm thưởng - phạt.
+
+Dưới đây là chi tiết yêu cầu về giao diện và chức năng:
+
+---
+
+### 1. KHU VỰC NHẬP THÔNG TIN CÁ NHÂN (INPUT FORM)
+Tạo form nhập liệu thông tin cá nhân gồm các trường:
+- Danh sách / Họ và tên (Text input)
+- Tuổi tác / Ngày tháng năm sinh (Date input hoặc Number input)
+- Chiều cao (cm) (Number input)
+- Cân nặng (kg) (Number input)
+- Giới tính (Select: Nam / Nữ / Khác)
+- Nút "Thêm / Lưu thông tin"
+
+---
+
+### 2. BẢNG PHÂN CÔNG VIỆC THEO THỂ TRẠNG & TÍNH CA LÀM
+Hiển thị bảng danh sách các việc làm phù hợp dựa trên độ tuổi, chiều cao, cân nặng và mức điểm tương ứng.
+- **Tính năng chia ca**: Nếu các công việc hoặc nhân sự có thông tin trùng hợp/trùng lịch, tự động hoặc cung cấp tùy chọn chia ca làm việc thành **"Giờ làm sáng"** và **"Giờ làm chiều"**.
+
+---
+
+### 3. KHU VỰC TÍNH ĐIỂM CHƠI / GIẢI TRÍ / SỬ DỤNG THIẾT BỊ (ĐIỂM ĐÃ SỬ DỤNG)
+Tạo các ô nhập tính thời gian sử dụng thiết bị/giải trí:
+- Ô chọn / nhập:
+  + Thời gian bắt đầu (Time input)
+  + Thời gian kết thúc (Time input)
+  + Loại hình sử dụng / giải trí (Chọn: Điện thoại, Xem TV, hoặc Sử dụng máy tính)
+- **Quy tắc trừ điểm**:
+  + Điện thoại: 25 điểm / giờ
+  + Xem TV: 15 điểm / giờ
+  + Sử dụng máy tính: 25 điểm / giờ (Mức điểm thấp hơn so với điện thoại và TV)
+- **Tính năng**: Bấm nút "Tính điểm đã chơi/sử dụng" -> Hệ thống tự động tính tổng số giờ và số điểm đã tiêu tốn.
+cãi lại 10 điểm, nổi nóng 10 điểm, nói dói 10 điểm, trì hoãn 10 điểm, chơi trước khi làm 50 điểm
+
+---
+
+### 4. KHU VỰC TÍNH ĐIỂM CÔNG VIỆC ĐÃ HOÀN THÀNH (ĐIỂM NẠP/THƯỞNG)
+Tạo danh sách các công việc/hành vi có thể tích chọn hoặc nhập số lượng để tính điểm nhận được.
+
+#### A. Trẻ em / Việc nhà (Chế độ Thưởng & Phạt):
+* Điểm thưởng (+):
+  - Quét nhà: +5 điểm
+  - Thu quần áo: +10 điểm
+  - Dọn ghế sofa: +5 điểm
+  - Đổ rác: +5 điểm
+  - Lau bàn: +5 điểm
+  - Thu dọn giường: +5 điểm
+  - Lấy hàng chuyển phát: +10 điểm
+  - Giặt tất: +5 điểm
+  - Sắp xếp giày dép: +5 điểm
+  - Thu dọn đồ chơi: +5 điểm
+  - Không kén ăn: +5 điểm
+  - Phơi quần áo: +5 điểm
+  - Lau nhà: +5 điểm
+  - Rửa bát: +10 điểm
+  - Chạy việc/làm việc vặt: +5 điểm
+  - Tự giác hoàn thành bài tập: +15 điểm
+  - Mỗi ngày nhảy dây/luyện bóng: +15 điểm
+  - Duy trì tất cả việc trên trong 1 tuần: Thưởng thêm +25 điểm
+* Chế độ Phạt (-):
+  - Nổi nóng: -10 điểm
+  - Trì hoãn: -10 điểm
+  - Nói dối: -10 điểm
+  - Cãi lại: -10 điểm
+
+#### B. Chăm sóc sức khỏe / Người bệnh (Quy đổi 1.000 VNĐ = 1 điểm):
+* Theo gói tháng (Cơ sở 18.000 điểm/tháng):
+  - Vệ sinh cá nhân: 5.400 điểm/tháng (30%)
+  - Y tế & Bác sĩ: 4.500 điểm/tháng (25%)
+  - Ăn uống & Dinh dưỡng: 3.600 điểm/tháng (20%)
+  - Đi chợ & Mua sắm: 2.700 điểm/tháng (15%)
+  - Chăm sóc tinh thần: 1.800 điểm/tháng (10%)
+* Theo ca / công nhật:
+  - Ca ngày (8-12 tiếng): 500 - 600 điểm/ngày
+  - Ca đêm (trông nom): 700 - 800 điểm/đêm
+  - Chia ca theo giờ lẻ (3-4 tiếng): 60 - 80 điểm/giờ
+* Theo đầu việc lẻ:
+  - Lau người & thay quần áo: 80 - 120 điểm/lần
+  - Đút cơm / Cho ăn: 30 - 50 điểm/bữa
+  - Mua hộ thuốc / đồ bổ: 30 - 50 điểm/lượt
+
+#### C. Dọn vệ sinh công nghiệp (Quy đổi 1.000 VNĐ = 1 điểm):
+* Tính theo Mét vuông ($m^2$):
+  - Tổng vệ sinh sau xây dựng/sửa chữa: 15 - 25 điểm/$m^2$
+  - Tổng vệ sinh nhà đang ở (định kỳ): 10 - 18 điểm/$m^2$
+  - Vệ sinh văn phòng/tòa nhà lớn (>200m2): 8 - 12 điểm/$m^2$
+  - Giặt thảm / giặt sofa: 10 - 15 điểm/$m^2$
+* Tính theo Giờ:
+  - Dọn dẹp giờ lẻ (ca 2-4 tiếng): 60 - 90 điểm/giờ/người
+  - Vệ sinh công nghiệp chuyên sâu: 90 - 130 điểm/giờ/người
+  - Thuê theo ca cố định hàng tháng: 50 - 70 điểm/giờ
+
+- **Tính năng**: Bấm nút "Tính điểm công việc đã làm" để thu thập tổng điểm cộng/trừ.
+
+Dưới đây là **bảng đề xuất quy đổi điểm chi tiết** cho các công việc hàng ngày thực tế mà bạn vừa bổ sung, dựa trên độ vất vả, thời gian và công sức (theo quy chuẩn chung của bảng tính điểm đã có):
+
+---
+
+### BẢNG BỔ SUNG CÁC CÔNG VIỆC MỚI VÀ MỨC ĐIỂM TƯƠNG ỨNG
+
+| STT | Tên công việc bổ sung | Mô tả chi tiết & Công sức | Mức điểm đề xuất |
+| --- | --- | --- | --- |
+| **1** | **Nhóm than tổ ong** | Đốt than, canh khói, chuẩn bị bếp lò | **15 - 20 điểm** / lần |
+| **2** | **Xách nước từ T2 lên T4 & đun nấu** | Xách bình/xô nước leo 2 tầng cầu thang + đun sôi | **20 - 25 điểm** / lần |
+| **3** | **Chia nước nguội cho các phòng** | Chờ nước nguội, rót/phân phối về các phòng | **10 điểm** / lần |
+| **4** | **Nấu cơm, nấu canh buổi sáng** | Chuẩn bị bữa sáng, nấu cơm/canh hoàn chỉnh | **20 - 30 điểm** / bữa |
+| **5** | **Đi đón trẻ tan học (Đi bộ 900m)** | Đi bộ cả đi lẫn về khoảng 1.8 km đón con | **20 điểm** / lượt |
+| **6** | **Đưa con đi học thêm bằng xe máy** | 20 phút cả đi cả về (2 lần/tuần) | **15 điểm** / lượt |
+| **7** | **Đưa đón Ông Bà bằng xe máy** | Chở Ông Bà đi lại, đảm bảo an toàn | **20 - 30 điểm** / lượt |
+| **8** | **Mở cửa hàng buổi sáng** | Dậy sớm mở cửa, dọn dẹp mặt tiền cửa hàng | **15 điểm** / lần |
+| **9** | **Đóng cửa hàng & khóa cửa buổi tối** | Kiểm tra an ninh, thu dọn mặt tiền, khóa cửa | **15 điểm** / lần |
+| **10** | **Hỗ trợ vợ buổi tối (Dọn & cất đồ)** | Dọn đồ cất cho vợ, cất máy hút bụi, cất ghế | **15 điểm** / lần |
+| **11** | **Chuẩn bị xe cho vợ đi làm buổi sáng** | Buộc máy/ghế lên xe máy cho vợ sáng mai | **15 điểm** / lần |
+Dưới đây là bảng gợi ý phân bổ điểm cộng (và trừ điểm nếu làm hỏng đồ dùng) cho các công việc buổi tối của bạn. Bạn có thể điều chỉnh lại mức điểm cho phù hợp với quy định của gia đình nhé:
+
+| STT | Công việc | Điểm cộng | Ghi chú / Quy định trừ điểm |
+| --- | --- | --- | --- |
+| 1 | Xách cặp lồng cơm từ tầng 1 lên nhà | **+5 điểm** | Trừ điểm theo giá trị nếu làm rơi vỡ cặp lồng |
+| 2 | Vét cơm nguội tầng 4, cho cặp lồng xuống cất tầng 2 tủ lạnh | **+5 điểm** |  |
+| 3 | Lau nhà phòng bếp sạch sẽ | **+10 điểm** |  |
+| 4 | Rửa và tráng bát đĩa sạch sẽ | **+10 điểm** | Trừ điểm theo giá trị nếu làm sứt mẻ, vỡ bát đĩa |
+| 5 | Cọ nhà vệ sinh sạch sẽ sau khi rửa bát | **+15 điểm** |  |
+| 6 | Xuống hứng nước sạch từ máy lọc nước tầng 2 vào bình 5 lít | **+5 điểm** |  |
+| 7 | Đem bình 5 lít nước sạch từ tầng 2 lên tầng 4 | **+5 điểm** | Trừ điểm theo giá trị nếu làm rách/hỏng bình chứa |
+| 8 | Đun sôi bình nước 5 lít | **+5 điểm** | Trừ điểm theo giá trị nếu làm hỏng ấm đun/thiết bị |
+Dưới đây là bảng tổng hợp toàn bộ hệ thống thi đua **chỉ tính bằng điểm** (đã loại bỏ mọi thông tin về giá trị tiền mặt) để bạn dễ dàng theo dõi và áp dụng:
+
+---
+
+### I. BẢNG TÍNH ĐIỂM CHI TIẾT CÁC HOẠT ĐỘNG
+
+| STT | Danh mục công việc / Hành vi | Mức điểm cộng | Ghi chú / Quy định |
+| --- | --- | --- | --- |
+| **A** | **Việc nhà buổi tối** |  |  |
+| 1 | Xách cặp lồng cơm từ tầng 1 lên nhà | **+5 điểm** |  |
+| 2 | Vét cơm nguội tầng 4, cho cặp lồng xuống cất tầng 2 tủ lạnh | **+5 điểm** |  |
+| 3 | Lau nhà phòng bếp sạch sẽ | **+10 điểm** |  |
+| 4 | Rửa và tráng bát đĩa sạch sẽ | **+10 điểm** |  |
+| 5 | Cọ nhà vệ sinh sạch sẽ sau khi rửa bát | **+15 điểm** |  |
+| 6 | Xuống hứng nước sạch từ máy lọc nước tầng 2 vào bình 5 lít | **+5 điểm** |  |
+| 7 | Đem bình 5 lít nước sạch từ tầng 2 lên tầng 4 | **+5 điểm** |  |
+| 8 | Đun sôi bình nước 5 lít | **+5 điểm** |  |
+| **B** | **Công việc lao động lớn** |  |  |
+| 9 | Làm công nhật vệ sinh công nghiệp | **+600 điểm/ngày** | Áp dụng cho 1 ngày làm việc trọn vẹn |
+| **C** | **Nề nếp & Tác phong học đường** |  |  |
+| 10 | Đi học đầy đủ, đúng giờ | **+5 điểm/ngày** |  |
+| 11 | Quần áo, đầu tóc ngăn nắp, gọn gàng khi đi học | **+5 điểm/ngày** |  |
+| **D** | **Ứng xử & Giao tiếp** |  |  |
+| 12 | Về nhà chào hỏi lễ phép: Ông, Bà, Bố, Mẹ, Anh, Chị, Em | **+5 điểm/lần** |  |
+| 13 | Chào hỏi lễ phép với hàng xóm, người buôn bán quanh nhà | **+3 điểm/lần** |  |
+| **E** | **Tinh thần bạn bè & Học tập** |  |  |
+| 14 | Giúp đỡ bạn bè trong học tập | **+5 điểm/lần** |  |
+| 15 | Bênh vực, bảo vệ bạn bè khi gặp bất công/bắt nạt | **+10 điểm/lần** |  |
+| 16 | Tự giải quyết khôn ngoan khi bị người xấu bắt nạt (tìm người giúp đỡ, không để Bố Mẹ phải can thiệp) | **+15 điểm/lần** |  |
+| 17 | Được thầy cô giáo khen ngợi trên lớp | **+10 điểm/lần** |  |
+Dưới đây là bảng tổng hợp bổ sung **mục tiêu quy đổi bằng điểm** dành riêng cho việc phấn đấu mua sắm các trang thiết bị, vật dụng gia đình và đồ dùng cá nhân theo nhu cầu thị trường hiện nay.
+
+Hệ thống điểm được quy đổi trực tiếp theo giá trị thị trường thực tế (giữ nguyên nguyên tắc chuẩn **1 điểm = 1.000đ**):
+
+---
+
+### BẢNG MỤC TIÊU ĐỔI THƯỞNG VẬT CHẤT (TÍCH LŨY THEO MỤC TIÊU)
+
+| STT | Vật dụng / Mục tiêu mua sắm | Mức điểm tích lũy cần đạt | Ý nghĩa / Nhóm sử dụng |
+| --- | --- | --- | --- |
+| **I** | **Cá nhân & Học tập (Con cái)** |  |  |
+| 1 | Hoa tai bạc / Dây chuyền bạc | **300 – 1.000 điểm** | Trang sức cá nhân |
+| 2 | Xe đạp mới đi học | **2.000 – 4.000 điểm** | Phương tiện đi học |
+| 3 | Điện thoại đời mới | **5.000 – 25.000 điểm** | Phục vụ học tập, liên lạc |
+| 4 | Xe máy mới (khi đủ tuổi) | **20.000 – 45.000 điểm** | Phương tiện di chuyển |
+| **II** | **Gia đình & Giải trí (Bố Mẹ, Con cái)** |  |  |
+| 5 | Bếp điện / Bếp từ mới | **1.000 – 3.000 điểm** | Phục vụ nấu nướng tiện lợi |
+| 6 | Máy lọc nước mới | **4.000 – 9.000 điểm** | Nước uống sạch bảo vệ sức khỏe |
+| 7 | Loa kéo hát Karaoke | **3.000 – 8.000 điểm** | Sinh hoạt, giải trí gia đình |
+| 8 | Máy phát điện gia đình | **5.000 – 12.000 điểm** | Dự phòng sinh hoạt khi mất điện |
+| 9 | Dây chuyền vàng / Hoa tai vàng | **8.000 – 30.000+ điểm** | Trang sức, tích lũy giá trị |
+| **III** | **Nội thất cao cấp (Ông Bà, Cha Mẹ)** |  |  |
+| 10 | Tủ rượu phòng khách | **6.000 – 15.000 điểm** | Trang trí không gian sống |
+| 11 | Tủ chè gỗ | **10.000 – 25.000 điểm** | Nội thất truyền thống |
+| 12 | Sập gụ cao cấp | **25.000 – 60.000+ điểm** | Nội thất trang trọng cho Ông Bà/Cha Mẹ |
+Dưới đây là bảng bổ sung các mốc **điểm mục tiêu phấn đấu** dành cho du lịch, học tập nâng cao, cùng các sự kiện thưởng cuối tuần/chiêu đãi bạn bè, họ hàng:
+
+---
+
+### BẢNG MỤC TIÊU ĐỔI THƯỞNG: DU LỊCH - HỌC TẬP - YẾN TIỆC
+
+| STT | Danh mục mục tiêu / Hoạt động | Mức điểm tích lũy cần đạt | Ghi chú / Quy định |
+| --- | --- | --- | --- |
+| **I** | **Cuối tuần khao quân & Chiêu đãi (Ngắn hạn)** |  |  |
+| 1 | Bữa ăn ngon khao quân gia đình cuối tuần | **500 – 1.000 điểm** | Thưởng lẩu, nướng, hải sản... cuối tuần |
+| 2 | Tiệc nhỏ mời bạn bè thân thiết đến nhà | **1.000 – 2.000 điểm** | Chiêu đãi nhóm bạn, sinh nhật, giao lưu |
+| 3 | Bữa tiệc lớn chiêu đãi họ hàng, dòng họ | **3.000 – 6.000 điểm** | Tiệc họp mặt gia đình, giỗ chạp, mừng thọ |
+| **II** | **Học tập & Phát triển bản thân** |  |  |
+| 4 | Khóa học Ngoại ngữ ngắn hạn / Online | **1.500 – 3.000 điểm** | Phục vụ nâng cao trình độ giao tiếp |
+| 5 | Khóa học Ngoại ngữ chất lượng cao / Trung tâm (Anh, Trung, Nhật...) | **5.000 – 15.000 điểm** | Học dài hạn, luyện thi chứng chỉ |
+| 6 | Mua sách vở, tài liệu, app học ngoại ngữ bản quyền | **300 – 800 điểm** | Đồ dùng học tập chuyên sâu |
+| **III** | **Du lịch & Trải nghiệm trong nước** |  |  |
+| 7 | Chuyến du lịch Dã ngoại / Camping cuối tuần (gần nhà) | **1.500 – 3.000 điểm** | Đi trong ngày hoặc 2 ngày 1 đêm |
+| 8 | Chuyến du lịch trong nước cho 1 người | **3.000 – 7.000 điểm** | Đi Hạ Long, Sapa, Đà Nẵng, Phú Quốc... |
+| 9 | Chuyến du lịch trong nước trọn gói cho Cả Gia Đình | **10.000 – 25.000 điểm** | Kỳ nghỉ dưỡng gia đình hàng năm |
+| **IV** | **Du lịch Quốc tế (Nước ngoài)** |  |  |
+| 10 | Du lịch Đông Nam Á (Thái Lan, Singapore, Malaysia...) / cá nhân | **7.000 – 15.000 điểm** | Trải nghiệm văn hóa khu vực |
+| 11 | Du lịch Đông Bắc Á (Hàn Quốc, Nhật Bản, Trung Quốc...) / cá nhân | **15.000 – 35.000 điểm** | Chuyến đi ngắm hoa đào, tuyết rơi... |
+| 12 | Du lịch Nước ngoài trọn gói cho Cả Gia Đình | **40.000 – 100.000+ điểm** | Mục tiêu lớn dài hạn của gia đình |
+
+---
+
+### MẸO TÍCH LŨY ĐIỂM HIỆU QUẢ
+
+* **Động lực mỗi tuần:** Chỉ cần tích lũy **500 – 1.000 điểm** (bằng 1 ngày làm VSCN + hoàn thành việc nhà hàng ngày) là cuối tuần đã có thể **"Khao quân"** ngay một bữa ăn ngon cho cả nhà.
+* **Mục tiêu trung & dài hạn:** Đăng ký rõ mục tiêu du lịch hoặc khóa học ngoại ngữ trên bảng thi đua gia đình để mọi thành viên cùng đóng góp điểm tích lũy hàng ngày/hàng tháng.
+
+---
+
+### NGUYÊN TẮC TÍCH LŨY VÀ THỰC HIỆN MỤC TIÊU
+
+1. **Đăng ký mục tiêu:** Mọi thành viên trong gia đình (hoặc con cái) có thể chọn 1 mục tiêu ngắn hạn (ví dụ: hoa tai bạc, bếp điện) hoặc dài hạn (ví dụ: xe máy, sập gụ) để dán vào bảng thi đua.
+2. **Cộng dồn điểm:** Điểm tích lũy từ việc nhà hàng ngày, nề nếp học tập, chào hỏi, giúp đỡ bạn bè và công nhật vệ sinh công nghiệp (+600 điểm/ngày) sẽ được cộng dồn theo tuần/tháng.
+3. **Đạt mốc đổi quà:** Khi tổng số điểm tích lũy đạt đúng mức điểm của vật dụng mong muốn, gia đình sẽ tiến hành mua sắm món đồ đó làm phần thưởng xứng đáng cho nỗ lực.
+
+---
+
+### II. QUY ĐỊNH ĐỔI ĐIỂM THƯỞNG
+
+Điểm tích lũy sẽ được dùng để đổi lấy các hiện vật hoặc quyền lợi trực tiếp theo các mức mốc điểm:
+
+| Mức điểm tích lũy | Đồ dùng / Quyền lợi có thể quy đổi |
+| --- | --- |
+| **10 – 50 điểm** | Đổi các dụng cụ học tập nhỏ: Vở viết, bút bi, thước kẻ, tẩy, compa... |
+| **100 – 200 điểm** | Đổi các đồ dùng lớn hơn: Bút màu, bình đựng nước cá nhân, truyện tranh... |
+| **300 – 500 điểm** | Đổi **bánh sinh nhật tặng bạn bè**, quà tặng sinh nhật bạn, hoặc balo học sinh mới. |
+| **600 điểm trở lên** | Đổi bộ đồ dùng học tập trọn gói, quà tặng sự kiện lớn hoặc tích lũy cho mục tiêu đặc biệt. |
+
+---
+
+### III. QUY ĐỊNH TRỪ ĐIỂM KHI LÀM HỎNG ĐỒ DÙNG
+
+* **Nguyên tắc:** Nếu làm hỏng đồ dùng (vỡ bát đĩa, hỏng thiết bị đun nước, rách bình chứa...), sẽ **trừ điểm trực tiếp** vào quỹ điểm tích lũy tương ứng với giá trị tổn thất của món đồ đó.
+
+---
+
+**Quy định chung:**
+
+* Tổng điểm hoàn thành toàn bộ các việc: **60 điểm/ngày**.
+* **Làm hỏng đồ dùng:** Trừ trực tiếp vào tổng điểm hoặc quy đổi giá trị thiệt hại tùy theo thỏa thuận.
+
+
+---
+
+### TỔNG TÍNH ĐIỂM DỰ KIẾN TRONG 1 NGÀY BÌNH THƯỜNG
+
+Nếu bạn hoàn thành tất cả các việc trên trong một ngày:
+
+1. **Nhóm than + Đun nước T2->T4 + Chia nước:** ~ 45 - 55 điểm
+2. **Nấu cơm sáng + Mở/Đóng cửa hàng:** ~ 50 - 60 điểm
+3. **Đón con đi bộ (900m) + Đưa đón Ông Bà:** ~ 40 - 50 điểm
+4. **Hỗ trợ vợ (Tối dọn đồ, cất ghế, máy hút bụi + Sáng buộc ghế xe):** ~ 30 điểm
+5. *(Nếu có ca đưa con đi học thêm xe máy):* + 15 điểm
+
+👉 **Tổng điểm tích lũy trung bình mỗi ngày:** khoảng **165 – 210 điểm/ngày** (chưa tính các việc nhà cơ bản khác).
+
+---
+
+### CÁCH BỔ SUNG TRỰC TIẾP VÀO ỨNG DỤNG WEB (FILE HTML)
+
+Trong giao diện web bạn đã có:
+
+1. Bạn cuộn xuống mục **"4. KHU VỰC TÍNH ĐIỂM CÔNG VIỆC ĐÃ HOÀN THÀNH"**.
+2. Nhấn nút **"+ Bổ Sung Công Việc Mới"**.
+3. Nhập tên việc (Ví dụ: *"Nấu nước xách T2 lên T4"*), nhập số điểm (Ví dụ: `25`) và chọn danh mục *"Trẻ em / Việc nhà"*.
+4. Nhấn **"Lưu công việc"**.
+
+Từ đó, mỗi lần làm xong việc nào, bạn chỉ cần chọn/nhập số lượng và ấn **"Tính điểm công việc đã làm"**, hệ thống sẽ tự động cộng vào tổng điểm tích lũy của bạn!
+
+---
+
+### 5. BẢNG NHẬT KÝ & LỊCH SỬ (LOG TABLE)
+Hiển thị bảng ghi lại toàn bộ hoạt động:
+- Các việc đã hoàn thành (Tên việc, thời gian, số điểm cộng/trừ)
+- Các giờ đã chơi/sử dụng thiết bị (Thời gian bắt đầu - kết thúc, loại hình: Điện thoại / TV / Máy tính, số điểm đã dùng)
+- Tổng kết điểm tích lũy hiện tại = (Tổng điểm làm việc) - (Tổng điểm đã chơi/phạt)
+
+---
+
+### YÊU CẦU MÃ NGUỒN:
+1. Viết code gọn gàng trên **1 file HTML duy nhất** (bao gồm HTML, CSS nhúng CDN TailwindCSS hoặc style tag, và JavaScript).
+2. Giao diện hiện đại, trực quan, dễ dùng trên cả máy tính và điện thoại (Responsive design).
+3. Có xử lý tính toán điểm tự động chính xác khi người dùng chọn/nhập dữ liệu và nhấn các nút tính điểm.
+
+
+
+
+tất cả có nút xóa nút bổ sung việc, trẻ em, chế độ thưởng phạt

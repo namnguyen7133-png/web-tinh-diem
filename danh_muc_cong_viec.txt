@@ -1,0 +1,179 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "name": "Quét nhà",
+      "category": "Mức 5 điểm - Bé Bích Ngọc (6 tuổi)",
+      "points": 5,
+      "min": 10
+    },
+    {
+      "id": 2,
+      "name": "Thu quần áo",
+      "category": "Mức 10 điểm - Bé Minh Châu",
+      "points": 10,
+      "min": 10
+    },
+    {
+      "id": 3,
+      "name": "Dọn ghế sofa",
+      "category": "Mức 5 điểm - Bé Bích Ngọc (6 tuổi)",
+      "points": 5,
+      "min": 10
+    },
+    {
+      "id": 4,
+      "name": "Đổ rác cấp 1 (Mang ra hành lang)",
+      "category": "Mức 5 điểm - Bé Bích Ngọc (6 tuổi)",
+      "points": 5,
+      "min": 10
+    },
+    {
+      "id": 5,
+      "name": "Lau bàn",
+      "category": "Mức 5 điểm - Bé Bích Ngọc (6 tuổi)",
+      "points": 5,
+      "min": 10
+    },
+    {
+      "id": 6,
+      "name": "Thu dọn giường",
+      "category": "Mức 5 điểm - Bé Bích Ngọc (6 tuổi)",
+      "points": 5,
+      "min": 10
+    },
+    {
+      "id": 7,
+      "name": "Lấy hàng chuyển phát",
+      "category": "Mức 10 điểm - Bé Minh Châu",
+      "points": 10,
+      "min": 10
+    },
+    {
+      "id": 8,
+      "name": "Giặt tất",
+      "category": "Mức 5 điểm - Bé Bích Ngọc (6 tuổi)",
+      "points": 5,
+      "min": 10
+    },
+    {
+      "id": 9,
+      "name": "Sắp xếp giày dép",
+      "category": "Mức 5 điểm - Bé Bích Ngọc (6 tuổi)",
+      "points": 5,
+      "min": 10
+    },
+    {
+      "id": 10,
+      "name": "Thu dọn đồ chơi",
+      "category": "Mức 5 điểm - Bé Bích Ngọc (6 tuổi)",
+      "points": 5,
+      "min": 10
+    },
+    {
+      "id": 11,
+      "name": "Không kén ăn",
+      "category": "Mức 5 điểm - Bé Bích Ngọc (6 tuổi)",
+      "points": 5,
+      "min": 10
+    },
+    {
+      "id": 12,
+      "name": "Phơi quần áo",
+      "category": "Mức 5 điểm - Bé Bích Ngọc (6 tuổi)",
+      "points": 5,
+      "min": 10
+    },
+    {
+      "id": 13,
+      "name": "Lau nhà",
+      "category": "Mức 5 điểm - Bé Bích Ngọc (6 tuổi)",
+      "points": 5,
+      "min": 10
+    },
+    {
+      "id": 14,
+      "name": "Rửa bát (Minh Châu)",
+      "category": "Mức 10 điểm - Bé Minh Châu",
+      "points": 10,
+      "min": 10
+    },
+    {
+      "id": 15,
+      "name": "Đổ rác cấp 2 (Gom xuống T1)",
+      "category": "Mức 10 điểm - Bé Minh Châu",
+      "points": 10,
+      "min": 10
+    },
+    {
+      "id": 16,
+      "name": "Chạy việc/làm việc vặt",
+      "category": "Mức 5 điểm - Bé Bích Ngọc (6 tuổi)",
+      "points": 5,
+      "min": 10
+    },
+    {
+      "id": 17,
+      "name": "Tự giác hoàn thành bài tập",
+      "category": "Mức 15 điểm - Trẻ lớn hơn",
+      "points": 15,
+      "min": 10
+    },
+    {
+      "id": 18,
+      "name": "Đổ rác cấp 3 (Đem ra ngoài đường)",
+      "category": "Mức 15 điểm - Trẻ lớn hơn",
+      "points": 15,
+      "min": 10
+    },
+    {
+      "id": 19,
+      "name": "Mỗi ngày nhảy dây/luyện bóng",
+      "category": "Mức 15 điểm - Trẻ lớn hơn",
+      "points": 15,
+      "min": 10
+    },
+    {
+      "id": 20,
+      "name": "Duy trì tất cả những việc trên trong 1 tuần",
+      "category": "Mức 15 điểm - Trẻ lớn hơn",
+      "points": 25,
+      "min": 10
+    },
+    {
+      "id": 21,
+      "name": "Nổi nóng",
+      "category": "Mức 10 điểm - Bé Minh Châu",
+      "points": -10,
+      "min": 0
+    },
+    {
+      "id": 22,
+      "name": "Trì hoãn",
+      "category": "Mức 10 điểm - Bé Minh Châu",
+      "points": -10,
+      "min": 0
+    },
+    {
+      "id": 23,
+      "name": "Nói dối",
+      "category": "Mức 10 điểm - Bé Minh Châu",
+      "points": -10,
+      "min": 0
+    },
+    {
+      "id": 24,
+      "name": "Cãi lại",
+      "category": "Mức 10 điểm - Bé Minh Châu",
+      "points": -10,
+      "min": 0
+    },
+    {
+      "id": 25,
+      "name": "Chơi trước khi làm",
+      "category": "Chế độ Phạt",
+      "points": -50,
+      "min": 0
+    }
+  ]
+}
