@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Tính Điểm Toàn Diện & Quản Lý Sức Khỏe</title>
+    <title>Hệ Thống Tính Điểm Toàn Diện & Quản Lý Thành Viên</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 4.7 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -18,761 +20,1357 @@
                         info: '#0891b2',
                         purple: '#7c3aed',
                         pink: '#ec4899',
-                        amber: '#f59e0b',
-                        neutral: '#f3f4f6',
-                        dark: '#1f2937',
-                    },
+                        amber: '#d97706',
+                        dark: '#1f2937'
+                    }
                 }
             }
         }
     </script>
     <style>
-        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
+        .card-shadow { box-shadow: 0 4px 20px -2px rgba(0,0,0,0.08); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .tab-btn.active { background-color: #1d4ed8; color: white; }
+        .tab-btn { transition: all 0.2s ease-in-out; }
+        .tab-btn.active { 
+            background-color: #1d4ed8; 
+            color: white; 
+            border-color: #1d4ed8;
+            box-shadow: 0 4px 6px -1px rgba(29,78,216,0.3);
+        }
         input, select, textarea { transition: all 0.2s; }
-        input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 2px rgba(29,78,216,0.2); }
+        input:focus, select:focus, textarea:focus { 
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(29,78,216,0.25);
+            border-color: #1d4ed8;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body class="bg-gray-50 font-sans text-dark min-h-screen">
-    <!-- Header -->
-    <header class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white py-5 shadow-lg">
-        <div class="container mx-auto px-4">
-            <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-center">
-                <i class="fa fa-star mr-2 text-yellow-300"></i> HỆ THỐNG TÍNH ĐIỂM & QUẢN LÝ SỨC KHỎE TOÀN DIỆN
-            </h1>
-            <p class="text-center mt-2 text-blue-100">Việc nhà • Lao động • Mua sắm • Sức khỏe • Thuốc</p>
-        </div>
-    </header>
+<body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex flex-col justify-between">
 
-    <!-- Tổng điểm cố định -->
-    <section class="py-4 bg-white shadow-md sticky top-0 z-20">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                <div class="bg-green-50 rounded-lg p-3">
-                    <h3 class="text-sm text-gray-600">Tổng điểm cộng</h3>
-                    <p id="tongDiemCong" class="text-2xl font-bold text-success">0</p>
-                </div>
-                <div class="bg-red-50 rounded-lg p-3">
-                    <h3 class="text-sm text-gray-600">Tổng điểm trừ/đã dùng</h3>
-                    <p id="tongDiemTru" class="text-2xl font-bold text-danger">0</p>
-                </div>
-                <div class="bg-blue-50 rounded-lg p-3">
-                    <h3 class="text-sm font-bold text-gray-800">Điểm tích lũy</h3>
-                    <p id="tongDiem" class="text-3xl font-bold text-primary">0</p>
+    <div>
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white py-6 shadow-md">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight flex items-center gap-2">
+                            <i class="fa fa-star text-yellow-300"></i> HỆ THỐNG TÍNH ĐIỂM & QUẢN LÝ TỔNG HỢP
+                        </h1>
+                        <p class="text-xs md:text-sm text-blue-100 mt-1">Quản lý thành viên • Ghi nhận việc nhà • Sức khỏe • Lao động • Thuốc • Mục tiêu</p>
+                    </div>
+                    <!-- Quick Actions -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="exportDataJSON()" class="bg-white/10 hover:bg-white/20 text-white text-xs md:text-sm px-3 py-2 rounded-lg border border-white/20 transition flex items-center gap-1.5" title="Xuất sao lưu dữ liệu">
+                            <i class="fa fa-download"></i> Sao lưu (JSON)
+                        </button>
+                        <label class="bg-white/10 hover:bg-white/20 text-white text-xs md:text-sm px-3 py-2 rounded-lg border border-white/20 transition flex items-center gap-1.5 cursor-pointer" title="Phục hồi dữ liệu từ file sao lưu">
+                            <i class="fa fa-upload"></i> Khôi phục
+                            <input type="file" id="importJsonFile" accept=".json" class="hidden" onchange="importDataJSON(event)">
+                        </label>
+                        <button onclick="clearAllDataConfirm()" class="bg-red-500/80 hover:bg-red-600 text-white text-xs md:text-sm px-3 py-2 rounded-lg transition flex items-center gap-1.5" title="Xóa toàn bộ">
+                            <i class="fa fa-trash"></i> Xóa tất cả
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </header>
 
-    <main class="container mx-auto px-4 py-6">
-        <!-- Thanh điều hướng Tab -->
-        <div class="flex flex-wrap gap-2 mb-6">
-            <button class="tab-btn active px-4 py-2 rounded-t-lg border border-b-0 bg-gray-100" data-tab="tab-nguoi">
-                <i class="fa fa-user text-primary"></i> Thông tin người
-            </button>
-            <button class="tab-btn px-4 py-2 rounded-t-lg border border-b-0 bg-gray-100" data-tab="tab-viec">
-                <i class="fa fa-home"></i> Việc nhà & Hành vi
-            </button>
-            <button class="tab-btn px-4 py-2 rounded-t-lg border border-b-0 bg-gray-100" data-tab="tab-sucKhoe">
-                <i class="fa fa-heartbeat text-pink-500"></i> Chăm sóc & Sức khỏe
-            </button>
-            <button class="tab-btn px-4 py-2 rounded-t-lg border border-b-0 bg-gray-100" data-tab="tab-thuoc">
-                <i class="fa fa-medkit text-red-500"></i> Thuốc & Vật tư Y tế
-            </button>
-            <button class="tab-btn px-4 py-2 rounded-t-lg border border-b-0 bg-gray-100" data-tab="tab-laoDong">
-                <i class="fa fa-briefcase text-purple-500"></i> Lao động & Mua sắm
-            </button>
-            <button class="tab-btn px-4 py-2 rounded-t-lg border border-b-0 bg-gray-100" data-tab="tab-mucTieu">
-                <i class="fa fa-bullseye text-success"></i> Mục tiêu & Đổi thưởng
-            </button>
-        </div>
-
-        <!-- ===== TAB 1: THÔNG TIN NGƯỜI ===== -->
-        <div id="tab-nguoi" class="tab-content active">
-            <section class="bg-white rounded-xl p-6 card-shadow mb-6">
-                <h2 class="text-xl font-bold mb-4"><i class="fa fa-user text-primary mr-2"></i> Thông tin cá nhân</h2>
-                <p class="text-gray-500 text-sm mb-4">Thông tin được lưu tự động, dùng lâu dài</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Họ và tên</label>
-                        <input type="text" id="hoTen" class="w-full px-3 py-2 border rounded-lg" placeholder="Nhập họ và tên">
+        <!-- Thống kê tổng quan cố định -->
+        <section class="py-3 bg-white border-b border-slate-200 shadow-sm sticky top-0 z-20">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-3">
+                    <div class="flex items-center gap-2 w-full md:w-auto">
+                        <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">Lọc xem người:</label>
+                        <select id="globalMemberFilter" onchange="renderAllTabViews()" class="w-full md:w-64 text-sm font-medium border-slate-300 rounded-lg px-3 py-1.5 bg-slate-50 border">
+                            <!-- Populated dynamically -->
+                        </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Ngày sinh</label>
-                        <input type="date" id="ngaySinh" class="w-full px-3 py-2 border rounded-lg">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Tuổi</label>
-                        <input type="number" id="tuoi" class="w-full px-3 py-2 border rounded-lg bg-gray-50" placeholder="Tự tính" readonly>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Chiều cao (cm)</label>
-                        <input type="number" id="chieuCao" class="w-full px-3 py-2 border rounded-lg" placeholder="VD: 165">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Cân nặng (kg)</label>
-                        <input type="number" id="canNang" class="w-full px-3 py-2 border rounded-lg" placeholder="VD: 58">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Chỉ số BMI</label>
-                        <input type="text" id="bmi" class="w-full px-3 py-2 border rounded-lg bg-gray-50" placeholder="Tự tính" readonly>
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium mb-1">Ghi chú / Tình trạng sức khỏe</label>
-                        <textarea id="ghiChuSucKhoe" rows="3" class="w-full px-3 py-2 border rounded-lg" placeholder="VD: Huyết áp, tiểu đường, dị ứng..."></textarea>
+                    <div class="grid grid-cols-3 gap-2 w-full md:w-auto text-center">
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-lg py-1.5 px-3">
+                            <span class="text-[10px] uppercase font-bold text-emerald-600 block">Tổng Điểm Cộng</span>
+                            <span id="statTongCong" class="text-base md:text-xl font-extrabold text-emerald-600">0</span>
+                        </div>
+                        <div class="bg-rose-50 border border-rose-100 rounded-lg py-1.5 px-3">
+                            <span class="text-[10px] uppercase font-bold text-rose-600 block">Tổng Trừ / Đã Dùng</span>
+                            <span id="statTongTru" class="text-base md:text-xl font-extrabold text-rose-600">0</span>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-100 rounded-lg py-1.5 px-3">
+                            <span class="text-[10px] uppercase font-bold text-blue-700 block">Tích Lũy Còn Lại</span>
+                            <span id="statTichLuy" class="text-base md:text-xl font-extrabold text-blue-700">0</span>
+                        </div>
                     </div>
                 </div>
-                <button onclick="luuThongTinNguoi()" class="bg-primary text-white px-6 py-2 rounded-lg">
-                    <i class="fa fa-save"></i> Lưu thông tin
+            </div>
+        </section>
+
+        <!-- Main Content Wrapper -->
+        <main class="container mx-auto px-4 py-6">
+
+            <!-- Notification Toast / Alert Box -->
+            <div id="alertBox" class="hidden mb-4 p-4 rounded-xl border flex items-center justify-between text-sm transition-all duration-300">
+                <span id="alertMessage" class="font-medium"></span>
+                <button onclick="hideAlert()" class="text-slate-400 hover:text-slate-600 ml-4">
+                    <i class="fa fa-times"></i>
                 </button>
-                <p id="thongBaoLuu" class="text-green-600 mt-3 hidden">✓ Đã lưu thông tin thành công!</p>
-            </section>
-        </div>
+            </div>
 
-        <!-- ===== TAB 2: VIỆC NHÀ & HÀNH VI ===== -->
-        <div id="tab-viec" class="tab-content">
-            <section class="bg-white rounded-xl p-6 card-shadow mb-6">
-                <h2 class="text-xl font-bold mb-4"><i class="fa fa-list-alt text-success mr-2"></i> Ghi nhận công việc & Hành vi</h2>
-                
-                <div class="mb-4">
-                    <label class="block text-sm font-medium mb-2">Chọn nhanh công việc:</label>
-                    <select id="chonViec" onchange="dienViec()" class="w-full px-3 py-2 border rounded-lg">
-                        <option value="">-- Chọn từ danh sách --</option>
-                        <optgroup label="Việc nhà cơ bản">
-                            <option value="Quét nhà,5">Quét nhà +5</option>
-                            <option value="Thu quần áo,10">Thu quần áo +10</option>
-                            <option value="Dọn ghế sofa,5">Dọn sofa +5</option>
-                            <option value="Đổ rác,5">Đổ rác +5</option>
-                            <option value="Lau bàn,5">Lau bàn +5</option>
-                            <option value="Dọn giường,5">Dọn giường +5</option>
-                            <option value="Lấy hàng chuyển phát,10">Lấy hàng chuyển phát +10</option>
-                            <option value="Giặt tất,5">Giặt tất +5</option>
-                            <option value="Sắp xếp giày dép,5">Sắp xếp giày dép +5</option>
-                            <option value="Dọn đồ chơi,5">Dọn đồ chơi +5</option>
-                            <option value="Không kén ăn,5">Không kén ăn +5</option>
-                            <option value="Phơi quần áo,5">Phơi quần áo +5</option>
-                            <option value="Lau nhà,5">Lau nhà +5</option>
-                            <option value="Rửa bát,10">Rửa bát +10</option>
-                            <option value="Chạy việc vặt,5">Chạy việc vặt +5</option>
-                            <option value="Hoàn thành bài tập,15">Hoàn thành bài tập +15</option>
-                            <option value="Nhảy dây/luyện bóng hàng ngày,15">Nhảy dây/luyện bóng +15</option>
-                            <option value="Duy trì tất cả việc 1 tuần,25">Thưởng duy trì tuần +25</option>
-                        </optgroup>
-                        <optgroup label="Công việc gia đình">
-                            <option value="Nhóm than tổ ong,15">Nhóm than tổ ong +15</option>
-                            <option value="Xách nước T2→T4 + đun nấu,20">Xách nước + đun nấu +20</option>
-                            <option value="Chia nước nguội các phòng,10">Chia nước nguội +10</option>
-                            <option value="Nấu cơm/canh buổi sáng,20">Nấu ăn sáng +20</option>
-                            <option value="Đón con tan học,20">Đón con tan học +20</option>
-                            <option value="Đưa con học thêm xe máy,15">Đưa con học thêm +15</option>
-                            <option value="Đưa đón Ông Bà,20">Đưa đón Ông Bà +20</option>
-                            <option value="Mở cửa hàng,15">Mở cửa hàng +15</option>
-                            <option value="Đóng cửa hàng + khóa cửa,15">Đóng cửa hàng +15</option>
-                            <option value="Hỗ trợ vợ tối,15">Hỗ trợ vợ tối +15</option>
-                            <option value="Chuẩn bị xe cho vợ,15">Chuẩn bị xe cho vợ +15</option>
-                            <option value="Xách cặp lồng cơm lên nhà,5">Xách cặp lồng cơm +5</option>
-                            <option value="Vét cơm nguội & cất cặp lồng,5">Vét cơm nguội +5</option>
-                            <option value="Lau bếp,10">Lau bếp +10</option>
-                            <option value="Rửa bát đĩa sạch,10">Rửa bát đĩa +10</option>
-                            <option value="Cọ nhà vệ sinh,15">Cọ nhà vệ sinh +15</option>
-                            <option value="Hứng nước sạch vào bình,5">Hứng nước sạch +5</option>
-                            <option value="Đem nước lên T4,5">Đem nước lên T4 +5</option>
-                            <option value="Đun sôi nước,5">Đun sôi nước +5</option>
-                        </optgroup>
-                        <optgroup label="Nề nếp & Học tập">
-                            <option value="Đi học đúng giờ,5">Đi học đúng giờ +5</option>
-                            <option value="Ăn mặc gọn gàng,5">Ăn mặc gọn gàng +5</option>
-                            <option value="Chào hỏi gia đình,5">Chào hỏi gia đình +5</option>
-                            <option value="Chào hỏi hàng xóm,3">Chào hỏi hàng xóm +3</option>
-                            <option value="Giúp bạn học,5">Giúp bạn học +5</option>
-                            <option value="Bảo vệ bạn bè,10">Bảo vệ bạn bè +10</option>
-                            <option value="Tự giải quyết vấn đề,15">Tự giải quyết +15</option>
-                            <option value="Được thầy cô khen,10">Được khen +10</option>
-                        </optgroup>
-                        <optgroup label="Đặc biệt">
-                            <option value="Đẻ con trai,50000">Đẻ con trai +50.000</option>
-                            <option value="Đẻ con gái,40000">Đẻ con gái +40.000</option>
-                            <option value="Quản lý tòa nhà,500">Quản lý tòa nhà +500</option>
-                            <option value="Mua sắm bán lẻ,250">Mua sắm bán lẻ +250</option>
-                        </optgroup>
-                        <optgroup label="Phạt - Trừ điểm">
-                            <option value="Nóng giận,-10">Nóng giận -10</option>
-                            <option value="Trì hoãn,-10">Trì hoãn -10</option>
-                            <option value="Nói dối,-10">Nói dối -10</option>
-                            <option value="Cãi lại,-10">Cãi lại -10</option>
-                            <option value="Chơi trước khi làm,-50">Chơi trước làm -50</option>
-                        </optgroup>
-                    </select>
+            <!-- Thanh điều hướng Tab -->
+            <div class="flex flex-wrap gap-2 mb-6 border-b border-slate-200 pb-2">
+                <button class="tab-btn active px-4 py-2.5 rounded-lg border font-semibold text-sm flex items-center gap-2" data-tab="tab-nguoi">
+                    <i class="fa fa-users text-blue-600"></i> Tab 1: Thành viên & Bảng điểm
+                </button>
+                <button class="tab-btn px-4 py-2.5 rounded-lg border font-semibold text-sm flex items-center gap-2 bg-white text-slate-700" data-tab="tab-viec">
+                    <i class="fa fa-check-square-o text-emerald-600"></i> Tab 2: Việc nhà & Hành vi
+                </button>
+                <button class="tab-btn px-4 py-2.5 rounded-lg border font-semibold text-sm flex items-center gap-2 bg-white text-slate-700" data-tab="tab-sucKhoe">
+                    <i class="fa fa-heartbeat text-pink-600"></i> Tab 3: Chăm sóc & Sức khỏe
+                </button>
+                <button class="tab-btn px-4 py-2.5 rounded-lg border font-semibold text-sm flex items-center gap-2 bg-white text-slate-700" data-tab="tab-thuoc">
+                    <i class="fa fa-medkit text-red-600"></i> Tab 4: Thuốc & Y tế
+                </button>
+                <button class="tab-btn px-4 py-2.5 rounded-lg border font-semibold text-sm flex items-center gap-2 bg-white text-slate-700" data-tab="tab-laoDong">
+                    <i class="fa fa-briefcase text-purple-600"></i> Tab 5: Lao động & Mua sắm
+                </button>
+                <button class="tab-btn px-4 py-2.5 rounded-lg border font-semibold text-sm flex items-center gap-2 bg-white text-slate-700" data-tab="tab-mucTieu">
+                    <i class="fa fa-bullseye text-amber-600"></i> Tab 6: Mục tiêu & Đổi thưởng
+                </button>
+            </div>
+
+            <!-- ==================== TAB 1: THÀNH VIÊN & BẢNG ĐIỂM ==================== -->
+            <div id="tab-nguoi" class="tab-content active space-y-6">
+                <!-- Form Thêm & Import danh sách -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Thêm thủ công -->
+                    <div class="bg-white p-5 rounded-xl card-shadow border border-slate-100">
+                        <h3 class="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <i class="fa fa-user-plus text-blue-600"></i> Thêm thành viên mới
+                        </h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Họ và tên *</label>
+                                <input type="text" id="inputTenNguoi" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: Nguyễn Văn A">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Ghi chú (Tùy chọn)</label>
+                                <input type="text" id="inputGhiChuNguoi" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: Con trai lớn, Nhân viên...">
+                            </div>
+                            <button onclick="themThanhVienThuCong()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg text-sm transition flex items-center justify-center gap-2">
+                                <i class="fa fa-plus"></i> Thêm vào danh sách
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Import từ TXT -->
+                    <div class="bg-white p-5 rounded-xl card-shadow border border-slate-100">
+                        <h3 class="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <i class="fa fa-file-text-o text-emerald-600"></i> Nhập danh sách từ File (.txt)
+                        </h3>
+                        <p class="text-xs text-slate-500 mb-3">Mỗi tên thành viên nằm trên một dòng hoặc cách nhau bởi dấu phẩy trong file TXT.</p>
+                        <div class="space-y-3">
+                            <input type="file" id="fileTxtInput" accept=".txt" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+                            <button onclick="importDanhSachTxt()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded-lg text-sm transition flex items-center justify-center gap-2">
+                                <i class="fa fa-upload"></i> Xử lý nhập file TXT
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Nhập danh sách văn bản trực tiếp -->
+                    <div class="bg-white p-5 rounded-xl card-shadow border border-slate-100">
+                        <h3 class="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <i class="fa fa-align-left text-purple-600"></i> Nhập nhanh nhiều tên
+                        </h3>
+                        <div class="space-y-2">
+                            <textarea id="textareaDanhSachTen" rows="2" class="w-full p-2 border border-slate-300 rounded-lg text-xs" placeholder="Dán danh sách tên ở đây (mỗi dòng 1 tên)..."></textarea>
+                            <button onclick="importDanhSachTuTextarea()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-1.5 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                                <i class="fa fa-plus-circle"></i> Thêm nhanh hàng loạt
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Tên việc / Hành vi</label>
-                        <input type="text" id="tenViec" class="w-full px-3 py-2 border rounded-lg" placeholder="Nhập hoặc chọn ở trên">
+                <!-- Bảng tổng hợp điểm thành viên từ Tab 1 -->
+                <div class="bg-white rounded-xl card-shadow border border-slate-100 p-5">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800"><i class="fa fa-list text-blue-600 mr-2"></i>Bảng Điểm Tổng Hợp Thành Viên</h3>
+                            <p class="text-xs text-slate-500">Danh sách thành viên gốc dùng chung cho toàn bộ các Tab tính điểm khác.</p>
+                        </div>
+                        <span id="memberCountBadge" class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full">0 thành viên</span>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Số điểm (+ / -)</label>
-                        <input type="number" id="diemViec" class="w-full px-3 py-2 border rounded-lg" placeholder="+5 hoặc -10">
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 text-xs uppercase font-semibold border-b">
+                                    <th class="p-3">#</th>
+                                    <th class="p-3">Họ và tên</th>
+                                    <th class="p-3">Ghi chú</th>
+                                    <th class="p-3 text-right text-emerald-600">Điểm cộng</th>
+                                    <th class="p-3 text-right text-rose-600">Điểm trừ / Dùng</th>
+                                    <th class="p-3 text-right text-blue-700 font-bold">Tích lũy</th>
+                                    <th class="p-3 text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="memberTableBody" class="divide-y divide-slate-100">
+                                <!-- Rendered dynamically -->
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="flex items-end">
-                        <button onclick="themViec()" class="w-full bg-success text-white py-2 rounded-lg">
-                            <i class="fa fa-check"></i> Ghi nhận
+                </div>
+            </div>
+
+            <!-- ==================== TAB 2: VIỆC NHÀ & HÀNH VI ==================== -->
+            <div id="tab-viec" class="tab-content space-y-6">
+                <div class="bg-white p-6 rounded-xl card-shadow border border-slate-100">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i class="fa fa-home text-emerald-600"></i> Ghi Nhận Việc Nhà & Hành Vi
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Người thực hiện *</label>
+                            <select id="t2_selectNguoi" class="select-member-dropdown w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Chọn việc mẫu nhanh</label>
+                            <select id="t2_selectMauViec" onchange="chonMauViecTab2()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                                <option value="">-- Chọn danh mục có sẵn --</option>
+                                <optgroup label="Việc nhà (+Điểm)">
+                                    <option value="Quét nhà & Lau nhà|10">Quét nhà & Lau nhà (+10)</option>
+                                    <option value="Rửa bát đĩa|10">Rửa bát đĩa sạch (+10)</option>
+                                    <option value="Thu & Phơi quần áo|10">Thu & Phơi quần áo (+10)</option>
+                                    <option value="Đổ rác & Thay túi rác|5">Đổ rác & Thay túi rác (+5)</option>
+                                    <option value="Sắp xếp đồ đạc gọn gàng|10">Sắp xếp đồ đạc gọn gàng (+10)</option>
+                                    <option value="Tự chuẩn bị sách vở / Bài tập|15">Tự chuẩn bị sách vở / Bài tập (+15)</option>
+                                    <option value="Nấu cơm / Chuẩn bị bữa ăn|20">Nấu cơm / Chuẩn bị bữa ăn (+20)</option>
+                                    <option value="Chăm sóc cây cảnh / Vật nuôi|10">Chăm sóc cây cảnh / Vật nuôi (+10)</option>
+                                </optgroup>
+                                <optgroup label="Hành vi tốt (+Điểm)">
+                                    <option value="Đi học đúng giờ & Ngoan ngoãn|10">Đi học đúng giờ & Ngoan ngoãn (+10)</option>
+                                    <option value="Được thầy cô tuyên dương|20">Được thầy cô tuyên dương (+20)</option>
+                                    <option value="Giúp đỡ bạn bè / Người thân|15">Giúp đỡ bạn bè / Người thân (+15)</option>
+                                </optgroup>
+                                <optgroup label="Hành vi chưa tốt (-Điểm)">
+                                    <option value="Trì hoãn công việc / Bài tập|-10">Trì hoãn công việc / Bài tập (-10)</option>
+                                    <option value="Không dọn đồ sau khi dùng|-10">Không dọn đồ sau khi dùng (-10)</option>
+                                    <option value="Nói dối / Cãi lời|-20">Nói dối / Cãi lời (-20)</option>
+                                    <option value="Sử dụng điện thoại quá giờ|-15">Sử dụng điện thoại quá giờ (-15)</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nội dung công việc / Hành vi *</label>
+                            <input type="text" id="t2_tenViec" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: Dọn phòng riêng">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Số điểm (+ Cộng / - Trừ) *</label>
+                            <input type="number" id="t2_diemViec" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: 10 hoặc -5">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button onclick="themGhiNhanTab2()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2 rounded-lg text-sm transition flex items-center gap-2">
+                            <i class="fa fa-check"></i> Ghi Nhận Điểm
                         </button>
                     </div>
                 </div>
 
-                <h3 class="font-medium mt-6 mb-2">📋 Lịch sử công việc:</h3>
-                <div class="max-h-64 overflow-y-auto border rounded-lg">
-                    <table class="w-full text-sm">
-                        <thead class="bg-gray-50 sticky top-0">
-                            <tr>
-                                <th class="px-3 py-2 text-left w-36">Thời gian</th>
-                                <th class="px-3 py-2 text-left">Nội dung</th>
-                                <th class="px-3 py-2 text-right w-24">Điểm</th>
-                                <th class="px-3 py-2 w-16">Xóa</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lsViec">
-                            <tr class="text-gray-400 text-center"><td colspan="4" class="py-3">Chưa có dữ liệu</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-
-        <!-- ===== TAB 3: CHĂM SÓC & SỨC KHỎE ===== -->
-        <div id="tab-sucKhoe" class="tab-content">
-            <section class="bg-white rounded-xl p-6 card-shadow mb-6">
-                <h2 class="text-xl font-bold mb-4"><i class="fa fa-heartbeat text-pink-500 mr-2"></i> Chăm sóc & Sức khỏe</h2>
-                
-                <h3 class="font-medium mb-3">Chăm sóc người bệnh (1.000đ = 1 điểm)</h3>
-                <div class="overflow-x-auto mb-4">
-                    <table class="w-full text-sm border">
-                        <thead class="bg-pink-50">
-                            <tr>
-                                <th class="px-3 py-2 text-left">Nội dung</th>
-                                <th class="px-3 py-2 text-left">Chi tiết</th>
-                                <th class="px-3 py-2 text-center">Điểm/tháng</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td class="px-3 py-2 font-medium">Vệ sinh cá nhân</td><td class="px-3 py-2">Lau người, thay đồ, thay tã</td><td class="px-3 py-2 text-center font-bold">5.400</td></tr>
-                            <tr><td class="px-3 py-2 font-medium">Theo dõi y tế</td><td class="px-3 py-2">Uống thuốc, đo huyết áp, hẹn bác sĩ</td><td class="px-3 py-2 text-center font-bold">4.500</td></tr>
-                            <tr><td class="px-3 py-2 font-medium">Ăn uống dinh dưỡng</td><td class="px-3 py-2">Nấu ăn, đút ăn, cho uống nước</td><td class="px-3 py-2 text-center font-bold">3.600</td></tr>
-                            <tr><td class="px-3 py-2 font-medium">Đi chợ & Mua đồ</td><td class="px-3 py-2">Mua thuốc, thực phẩm bổ dưỡng</td><td class="px-3 py-2 text-center font-bold">2.700</td></tr>
-                            <tr><td class="px-3 py-2 font-medium">Chăm sóc tinh thần</td><td class="px-3 py-2">Trò chuyện, túc trực</td><td class="px-3 py-2 text-center font-bold">1.800</td></tr>
-                            <tr class="bg-pink-50 font-bold"><td class="px-3 py-2" colspan="2">Tổng trọn gói 30 ngày</td><td class="px-3 py-2 text-center text-pink-600">18.000</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Loại chăm sóc</label>
-                        <select id="loaiCS" class="w-full px-3 py-2 border rounded-lg">
-                            <option value="500">Ca ngày 8-12h — 500 điểm</option>
-                            <option value="600">Ca ngày cao điểm — 600 điểm</option>
-                            <option value="700">Ca đêm — 700 điểm</option>
-                            <option value="800">Ca đêm cao điểm — 800 điểm</option>
-                            <option value="60">Giờ lẻ — 60 điểm/giờ</option>
-                            <option value="100">Lau người/thay đồ — 100 điểm/lần</option>
-                            <option value="40">Đút ăn — 40 điểm/bữa</option>
-                            <option value="40">Mua hộ thuốc/đồ — 40 điểm/lượt</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Số lượng</label>
-                        <input type="number" id="slCS" min="1" value="1" class="w-full px-3 py-2 border rounded-lg">
-                    </div>
-                    <div class="flex items-end">
-                        <button onclick="tinhCS()" class="w-full bg-pink-500 text-white py-2 rounded-lg">Cộng điểm</button>
+                <!-- Lịch sử Tab 2 -->
+                <div class="bg-white rounded-xl card-shadow border border-slate-100 p-5">
+                    <h4 class="font-bold text-slate-800 mb-3 text-sm flex items-center justify-between">
+                        <span><i class="fa fa-history text-slate-500 mr-2"></i>Lịch sử ghi nhận việc nhà & hành vi</span>
+                    </h4>
+                    <div class="overflow-x-auto max-h-80">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead class="bg-slate-50 sticky top-0 text-xs uppercase font-semibold text-slate-600 border-b">
+                                <tr>
+                                    <th class="p-2.5">Thời gian</th>
+                                    <th class="p-2.5">Thành viên</th>
+                                    <th class="p-2.5">Nội dung việc / hành vi</th>
+                                    <th class="p-2.5 text-right">Số điểm</th>
+                                    <th class="p-2.5 text-center w-16">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="t2_historyBody" class="divide-y divide-slate-100">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
 
-                <h3 class="font-medium mt-6 mb-2">📋 Lịch sử chăm sóc:</h3>
-                <div class="max-h-48 overflow-y-auto border rounded-lg">
-                    <table class="w-full text-sm">
-                        <thead class="bg-gray-50 sticky top-0">
-                            <tr>
-                                <th class="px-3 py-2 text-left w-36">Thời gian</th>
-                                <th class="px-3 py-2 text-left">Nội dung</th>
-                                <th class="px-3 py-2 text-right w-24">Điểm</th>
-                                <th class="px-3 py-2 w-16">Xóa</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lsCS">
-                            <tr class="text-gray-400 text-center"><td colspan="4" class="py-3">Chưa có dữ liệu</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
+            <!-- ==================== TAB 3: CHĂM SÓC & SỨC KHỎE ==================== -->
+            <div id="tab-sucKhoe" class="tab-content space-y-6">
+                <div class="bg-white p-6 rounded-xl card-shadow border border-slate-100">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i class="fa fa-heartbeat text-pink-600"></i> Chăm Sóc & Sức Khỏe (Cộng Điểm)
+                    </h3>
 
-        <!-- ===== TAB 4: THUỐC & VẬT TƯ Y TẾ ===== -->
-        <div id="tab-thuoc" class="tab-content">
-            <section class="bg-white rounded-xl p-6 card-shadow mb-6">
-                <h2 class="text-xl font-bold mb-4"><i class="fa fa-medkit text-red-500 mr-2"></i> Thuốc & Vật tư Y tế</h2>
-                <p class="text-gray-500 text-sm mb-4">Lưu danh sách thuốc cần mua, đã mua; tính điểm chi tiêu (trừ điểm tích lũy)</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Người thực hiện chăm sóc *</label>
+                            <select id="t3_selectNguoi" class="select-member-dropdown w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Loại thuốc</label>
-                        <select id="loaiThuoc" onchange="dienThuoc()" class="w-full px-3 py-2 border rounded-lg">
-                            <option value="">-- Chọn loại --</option>
-                            <optgroup label="Thuốc Tây y">
-                                <option value="Kháng sinh,--">Kháng sinh</option>
-                                <option value="Huyết áp,--">Thuốc huyết áp</option>
-                                <option value="Tiểu đường,--">Thuốc tiểu đường</option>
-                                <option value="Đau đầu/Hạ sốt,--">Đau đầu / Hạ sốt</option>
-                                <option value="Đau dạ dày,--">Đau dạ dày</option>
-                                <option value="Tim mạch,--">Tim mạch</option>
-                                <option value="Vitamin/Chất bổ,--">Vitamin / Chất bổ</option>
-                                <option value="Bông băng/Gạc/Y tế,--">Bông băng / Gạc / Vật tư</option>
-                            </optgroup>
-                            <optgroup label="Thuốc Đông y">
-                                <option value="Thuốc sắc theo đơn,--">Thuốc sắc theo đơn</option>
-                                <option value="Cao dán,--">Cao dán</option>
-                                <option value="Hoạt huyết/Đau xương khớp,--">Hoạt huyết / Đau xương khớp</option>
-                                <option value="Bổ khí huyết,--">Bổ khí huyết</option>
-                                <option value="An thần/Ngủ ngon,--">An thần / Ngủ ngon</option>
-                                <option value="Thuốc Đông y khác,--">Thuốc Đông y khác</option>
-                            </optgroup>
-                        </select>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Loại ca / Hoạt động *</label>
+                            <select id="t3_selectLoaiCS" onchange="tinhDiemGoiYT3()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                                <option value="500">Ca ngày (8h-12h) — 500 điểm</option>
+                                <option value="600">Ca ngày cao điểm — 600 điểm</option>
+                                <option value="700">Ca đêm trực bệnh — 700 điểm</option>
+                                <option value="800">Ca đêm cao điểm — 800 điểm</option>
+                                <option value="60">Hỗ trợ chăm sóc theo giờ — 60 điểm/giờ</option>
+                                <option value="100">Lau người, thay đồ y tế — 100 điểm/lần</option>
+                                <option value="50">Đút cơm / Hỗ trợ ăn uống — 50 điểm/bữa</option>
+                                <option value="40">Đưa đón đi khám bệnh — 40 điểm/lượt</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Số lượng / Số giờ</label>
+                            <input type="number" id="t3_soLuong" value="1" min="1" onchange="tinhDiemGoiYT3()" onkeyup="tinhDiemGoiYT3()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Tổng điểm cộng tính toán</label>
+                            <input type="number" id="t3_diemTinh" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-pink-50 font-bold text-pink-700" readonly>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Người dùng</label>
-                        <input type="text" id="nguoiDungThuoc" class="w-full px-3 py-2 border rounded-lg" placeholder="Tên người">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Tên thuốc / Hàng hóa</label>
-                        <input type="text" id="tenThuoc" class="w-full px-3 py-2 border rounded-lg" placeholder="VD: Amoxicilin, Cao xoa...">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Số lượng / Đơn vị</label>
-                        <input type="text" id="soLuongThuoc" class="w-full px-3 py-2 border rounded-lg" placeholder="VD: 1 hộp, 3 thang...">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Thành tiền (nghìn đồng)</label>
-                        <input type="number" id="tienThuoc" class="w-full px-3 py-2 border rounded-lg" placeholder="VD: 85 → 85 điểm">
-                    </div>
-                    <div class="flex items-end">
-                        <button onclick="themThuoc()" class="w-full bg-red-500 text-white py-2 rounded-lg">
-                            <i class="fa fa-shopping-cart"></i> Đã mua — Trừ điểm
+
+                    <div class="flex justify-end">
+                        <button onclick="themGhiNhanTab3()" class="bg-pink-600 hover:bg-pink-700 text-white font-medium px-6 py-2 rounded-lg text-sm transition flex items-center gap-2">
+                            <i class="fa fa-plus"></i> Ghi Nhận Điểm Chăm Sóc
                         </button>
                     </div>
                 </div>
 
-                <h3 class="font-medium mb-3">📋 Danh sách thuốc & vật tư:</h3>
-                <div class="max-h-72 overflow-y-auto border rounded-lg">
-                    <table class="w-full text-sm">
-                        <thead class="bg-gray-50 sticky top-0">
-                            <tr>
-                                <th class="px-2 py-2 text-left w-28">Thời gian</th>
-                                <th class="px-2 py-2 text-left w-24">Người</th>
-                                <th class="px-2 py-2 text-left">Thuốc / Hàng</th>
-                                <th class="px-2 py-2 text-center w-20">SL</th>
-                                <th class="px-2 py-2 text-right w-20">Điểm</th>
-                                <th class="px-2 py-2 w-14">Xóa</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lsThuoc">
-                            <tr class="text-gray-400 text-center"><td colspan="6" class="py-3">Chưa có dữ liệu</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-
-        <!-- ===== TAB 5: LAO ĐỘNG & MUA SẮM ===== -->
-        <div id="tab-laoDong" class="tab-content">
-            <section class="bg-white rounded-xl p-6 card-shadow mb-6">
-                <h2 class="text-xl font-bold mb-4"><i class="fa fa-briefcase text-purple-500 mr-2"></i> Lao động & Mua sắm</h2>
-                
-                <h3 class="font-medium mb-3">Ghi nhận thu nhập / Lương</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Nghề nghiệp / Công việc</label>
-                        <input type="text" id="ngheNghiep" class="w-full px-3 py-2 border rounded-lg" placeholder="VD: Nhân viên tòa nhà">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Số điểm (Lương x 1.000đ)</label>
-                        <input type="number" id="diemLN" class="w-full px-3 py-2 border rounded-lg" placeholder="VD: 8500">
-                    </div>
-                    <div class="flex items-end">
-                        <button onclick="themLN()" class="w-full bg-purple-500 text-white py-2 rounded-lg">Ghi nhận +</button>
+                <!-- Lịch sử Tab 3 -->
+                <div class="bg-white rounded-xl card-shadow border border-slate-100 p-5">
+                    <h4 class="font-bold text-slate-800 mb-3 text-sm flex items-center justify-between">
+                        <span><i class="fa fa-history text-slate-500 mr-2"></i>Lịch sử hoạt động chăm sóc & sức khỏe</span>
+                    </h4>
+                    <div class="overflow-x-auto max-h-80">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead class="bg-slate-50 sticky top-0 text-xs uppercase font-semibold text-slate-600 border-b">
+                                <tr>
+                                    <th class="p-2.5">Thời gian</th>
+                                    <th class="p-2.5">Người chăm sóc</th>
+                                    <th class="p-2.5">Nội dung chăm sóc</th>
+                                    <th class="p-2.5 text-center">Số lượng</th>
+                                    <th class="p-2.5 text-right text-emerald-600 font-bold">Điểm cộng</th>
+                                    <th class="p-2.5 text-center w-16">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="t3_historyBody" class="divide-y divide-slate-100">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
 
-                <h3 class="font-medium mb-3">Mua sắm kinh doanh</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Tên mặt hàng</label>
-                        <input type="text" id="tenHang" class="w-full px-3 py-2 border rounded-lg" placeholder="VD: Sạp, gụ, tủ chè...">
+            <!-- ==================== TAB 4: THUỐC & VẬT TƯ Y TẾ ==================== -->
+            <div id="tab-thuoc" class="tab-content space-y-6">
+                <div class="bg-white p-6 rounded-xl card-shadow border border-slate-100">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i class="fa fa-medkit text-red-600"></i> Quản Lý Mua Thuốc & Vật Tư (Trừ Điểm Tích Lũy)
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Thành viên chi mua / Dùng *</label>
+                            <select id="t4_selectNguoi" class="select-member-dropdown w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Loại thuốc / Vật tư</label>
+                            <select id="t4_loaiThuoc" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                                <option value="Thuốc Tây Y">Thuốc Tây Y (Kháng sinh, bổ, hạ sốt...)</option>
+                                <option value="Thuốc Đông Y">Thuốc Đông Y / Thuốc sắc</option>
+                                <option value="Vật tư Y tế">Vật tư Y tế (Bông gạc, khẩu trang, máy đo...)</option>
+                                <option value="Thực phẩm chức năng">Thực phẩm chức năng / Bổ dưỡng</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Tên thuốc / Hàng hóa *</label>
+                            <input type="text" id="t4_tenThuoc" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: Amoxicilin, Khẩu trang...">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Số lượng & Đơn vị</label>
+                            <input type="text" id="t4_soLuong" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: 2 hộp, 5 thang...">
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Số điểm (Giá x 1.000đ)</label>
-                        <input type="number" id="diemHang" class="w-full px-3 py-2 border rounded-lg" placeholder="VD: 25000">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Chi phí (Nghìn VNĐ = Điểm trừ) *</label>
+                            <input type="number" id="t4_chiPhi" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: 150 (Tương đương trừ 150 điểm)">
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="themGhiNhanTab4()" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 rounded-lg text-sm transition flex items-center justify-center gap-2">
+                                <i class="fa fa-shopping-cart"></i> Ghi Nhận Đã Mua (Trừ Điểm)
+                            </button>
+                        </div>
                     </div>
-                    <div class="flex items-end">
-                        <button onclick="muaHang()" class="w-full bg-amber-500 text-white py-2 rounded-lg">Đã mua — Trừ điểm</button>
+                </div>
+
+                <!-- Lịch sử Tab 4 -->
+                <div class="bg-white rounded-xl card-shadow border border-slate-100 p-5">
+                    <h4 class="font-bold text-slate-800 mb-3 text-sm flex items-center justify-between">
+                        <span><i class="fa fa-history text-slate-500 mr-2"></i>Lịch sử mua thuốc & vật tư y tế</span>
+                    </h4>
+                    <div class="overflow-x-auto max-h-80">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead class="bg-slate-50 sticky top-0 text-xs uppercase font-semibold text-slate-600 border-b">
+                                <tr>
+                                    <th class="p-2.5">Thời gian</th>
+                                    <th class="p-2.5">Người mua / Dùng</th>
+                                    <th class="p-2.5">Tên thuốc / Loại</th>
+                                    <th class="p-2.5 text-center">Số lượng</th>
+                                    <th class="p-2.5 text-right text-rose-600 font-bold">Điểm trừ</th>
+                                    <th class="p-2.5 text-center w-16">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="t4_historyBody" class="divide-y divide-slate-100">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== TAB 5: LAO ĐỘNG & MUA SẮM ==================== -->
+            <div id="tab-laoDong" class="tab-content space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Khối 1: Ghi nhận Lao Động / Thu Nhập (+) -->
+                    <div class="bg-white p-5 rounded-xl card-shadow border border-slate-100 space-y-3">
+                        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa fa-briefcase text-purple-600"></i> Ghi Nhận Lao Động / Thu Nhập (+Điểm)
+                        </h3>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Người lao động *</label>
+                            <select id="t5_selectNguoiLaoDong" class="select-member-dropdown w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Tên công việc / Nghề nghiệp *</label>
+                            <input type="text" id="t5_tenCongViec" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: Lương tháng / Công việc ngoài">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Số điểm thưởng (+Điểm = VNĐ / 1000) *</label>
+                            <input type="number" id="t5_diemLaoDong" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: 5000">
+                        </div>
+                        <button onclick="themLaoDongTab5()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 rounded-lg text-sm transition flex items-center justify-center gap-2">
+                            <i class="fa fa-plus-circle"></i> Cộng Điểm Lao Động
+                        </button>
+                    </div>
+
+                    <!-- Khối 2: Ghi nhận Mua Sắm Kinh Doanh (-) -->
+                    <div class="bg-white p-5 rounded-xl card-shadow border border-slate-100 space-y-3">
+                        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa fa-shopping-bag text-amber-600"></i> Mua Sắm & Chi Tiêu Kinh Doanh (-Điểm)
+                        </h3>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Người thực hiện mua *</label>
+                            <select id="t5_selectNguoiMuaSam" class="select-member-dropdown w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Mặt hàng / Thiết bị mua *</label>
+                            <input type="text" id="t5_tenMatHang" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: Bàn ghế, Tủ kệ kinh doanh">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Giá trị quy đổi điểm trừ *</label>
+                            <input type="number" id="t5_diemMuaSam" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: 1200">
+                        </div>
+                        <button onclick="themMuaSamTab5()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 rounded-lg text-sm transition flex items-center justify-center gap-2">
+                            <i class="fa fa-minus-circle"></i> Trừ Điểm Mua Sắm
+                        </button>
                     </div>
                 </div>
 
-                <h3 class="font-medium mb-3">📋 Lịch sử thu nhập & mua sắm:</h3>
-                <div class="max-h-48 overflow-y-auto border rounded-lg">
-                    <table class="w-full text-sm">
-                        <thead class="bg-gray-50 sticky top-0">
-                            <tr>
-                                <th class="px-3 py-2 text-left w-36">Thời gian</th>
-                                <th class="px-3 py-2 text-left">Nội dung</th>
-                                <th class="px-3 py-2 text-right w-24">Điểm</th>
-                                <th class="px-3 py-2 w-16">Xóa</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lsLaoDong">
-                            <tr class="text-gray-400 text-center"><td colspan="4" class="py-3">Chưa có dữ liệu</td></tr>
-                        </tbody>
-                    </table>
+                <!-- Lịch sử Tab 5 -->
+                <div class="bg-white rounded-xl card-shadow border border-slate-100 p-5">
+                    <h4 class="font-bold text-slate-800 mb-3 text-sm flex items-center justify-between">
+                        <span><i class="fa fa-history text-slate-500 mr-2"></i>Lịch sử lao động & mua sắm kinh doanh</span>
+                    </h4>
+                    <div class="overflow-x-auto max-h-80">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead class="bg-slate-50 sticky top-0 text-xs uppercase font-semibold text-slate-600 border-b">
+                                <tr>
+                                    <th class="p-2.5">Thời gian</th>
+                                    <th class="p-2.5">Thành viên</th>
+                                    <th class="p-2.5">Nội dung</th>
+                                    <th class="p-2.5">Loại</th>
+                                    <th class="p-2.5 text-right font-bold">Số điểm</th>
+                                    <th class="p-2.5 text-center w-16">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="t5_historyBody" class="divide-y divide-slate-100">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </section>
-        </div>
+            </div>
 
-        <!-- ===== TAB 6: MỤC TIÊU & ĐỔI THƯỞNG ===== -->
-        <div id="tab-mucTieu" class="tab-content">
-            <section class="bg-white rounded-xl p-6 card-shadow mb-6">
-                <h2 class="text-xl font-bold mb-4"><i class="fa fa-bullseye text-success mr-2"></i> Mục tiêu & Đổi thưởng</h2>
+            <!-- ==================== TAB 6: MỤC TIÊU & ĐỔI THƯỞNG ==================== -->
+            <div id="tab-mucTieu" class="tab-content space-y-6">
+                <!-- Tạo Mục Tiêu Mới -->
+                <div class="bg-white p-6 rounded-xl card-shadow border border-slate-100">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i class="fa fa-bullseye text-amber-600"></i> Thiết Lập Mục Tiêu & Đổi Thưởng Mới
+                    </h3>
 
-                <h3 class="font-medium mb-3">🎁 Vật dụng & Sắm sửa kinh doanh</h3>
-                <div class="overflow-x-auto mb-6">
-                    <table class="w-full text-sm border">
-                        <thead class="bg-green-50">
-                            <tr>
-                                <th class="px-3 py-2 text-left">Mục tiêu</th>
-                                <th class="px-3 py-2 text-center">Điểm cần đạt</th>
-                                <th class="px-3 py-2 text-center w-40">Tiến độ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td class="px-3 py-2">Vở, bút, đồ dùng học tập</td><td class="px-3 py-2 text-center">10–50</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-success rounded-full" style="width:0%" id="mt1"></div></div></td></tr>
-                            <tr><td class="px-3 py-2">Hoa tai / Dây chuyền bạc</td><td class="px-3 py-2 text-center">300–1.000</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-success rounded-full" style="width:0%" id="mt2"></div></div></td></tr>
-                            <tr><td class="px-3 py-2">Xe đạp mới đi học</td><td class="px-3 py-2 text-center">2.000–4.000</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-primary rounded-full" style="width:0%" id="mt3"></div></div></td></tr>
-                            <tr><td class="px-3 py-2">Máy lọc nước</td><td class="px-3 py-2 text-center">4.000–9.000</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-info rounded-full" style="width:0%" id="mt4"></div></div></td></tr>
-                            <tr class="bg-amber-50"><td class="px-3 py-2 font-medium">Mua kệ / tủ kính trưng bày</td><td class="px-3 py-2 text-center font-bold text-amber-700">4.000–12.000</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-amber-500 rounded-full" style="width:0%" id="mt5"></div></div></td></tr>
-                            <tr><td class="px-3 py-2">Loa kéo Karaoke</td><td class="px-3 py-2 text-center">3.000–8.000</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-warning rounded-full" style="width:0%" id="mt6"></div></div></td></tr>
-                            <tr class="bg-amber-50"><td class="px-3 py-2 font-medium">Trang bị bàn ghế kinh doanh</td><td class="px-3 py-2 text-center font-bold text-amber-700">5.000–15.000</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-amber-500 rounded-full" style="width:0%" id="mt7"></div></div></td></tr>
-                            <tr><td class="px-3 py-2">Máy phát điện</td><td class="px-3 py-2 text-center">5.000–12.000</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-warning rounded-full" style="width:0%" id="mt8"></div></div></td></tr>
-                            <tr class="bg-amber-50"><td class="px-3 py-2 font-medium">Mua gụ tủ chè / tủ gỗ</td><td class="px-3 py-2 text-center font-bold text-amber-700">8.000–25.000</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-amber-500 rounded-full" style="width:0%" id="mt9"></div></div></td></tr>
-                            <tr><td class="px-3 py-2">Điện thoại đời mới</td><td class="px-3 py-2 text-center">5.000–25.000</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-primary rounded-full" style="width:0%" id="mt10"></div></div></td></tr>
-                            <tr class="bg-amber-50"><td class="px-3 py-2 font-medium">Mua sạp kinh doanh</td><td class="px-3 py-2 text-center font-bold text-amber-700">15.000–35.000</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-amber-500 rounded-full" style="width:0%" id="mt11"></div></div></td></tr>
-                            <tr><td class="px-3 py-2">Dây chuyền vàng / Hoa tai vàng</td><td class="px-3 py-2 text-center">8.000–30.000+</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-yellow-500 rounded-full" style="width:0%" id="mt12"></div></div></td></tr>
-                            <tr><td class="px-3 py-2">Xe máy khi đủ tuổi</td><td class="px-3 py-2 text-center">20.000–45.000</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-purple-500 rounded-full" style="width:0%" id="mt13"></div></div></td></tr>
-                            <tr><td class="px-3 py-2">Du lịch nước ngoài cả gia đình</td><td class="px-3 py-2 text-center">40.000–100.000+</td><td class="px-3 py-2"><div class="h-2.5 bg-gray-200 rounded-full"><div class="h-2.5 bg-red-500 rounded-full" style="width:0%" id="mt14"></div></div></td></tr>
-                        </tbody>
-                    </table>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Gán cho thành viên nào *</label>
+                            <select id="t6_selectNguoi" class="select-member-dropdown w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Tên mục tiêu / Phần thưởng *</label>
+                            <input type="text" id="t6_tenMucTieu" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: Xe đạp mới, Mua điện thoại...">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Số điểm cần đạt *</label>
+                            <input type="number" id="t6_diemCanDat" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" placeholder="VD: 2000">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button onclick="themMucTieuTab6()" class="bg-amber-600 hover:bg-amber-700 text-white font-medium px-6 py-2 rounded-lg text-sm transition flex items-center gap-2">
+                            <i class="fa fa-flag"></i> Tạo Mục Tiêu
+                        </button>
+                    </div>
                 </div>
 
-                <div class="text-center mt-8">
-                    <button onclick="if(confirm('Xóa toàn bộ dữ liệu? Không thể hoàn tác!')) { localStorage.clear(); location.reload(); }" class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-6 rounded-lg">
-                        <i class="fa fa-refresh"></i> Đặt lại toàn bộ dữ liệu
-                    </button>
-                </div>
-            </section>
-        </div>
-    </main>
+                <!-- Danh sách Mục Tiêu & Tiến Độ -->
+                <div class="bg-white rounded-xl card-shadow border border-slate-100 p-5">
+                    <h4 class="font-bold text-slate-800 mb-4 text-base flex items-center gap-2">
+                        <i class="fa fa-tasks text-blue-600"></i> Bảng Tiến Độ Mục Tiêu Cá Nhân
+                    </h4>
 
-    <footer class="bg-dark text-white py-5 mt-10">
-        <div class="container mx-auto px-4 text-center text-sm text-gray-400">
-            <p>Lưu tự động trên thiết bị • Tỷ lệ: 1.000 VNĐ = 1 điểm • Dùng lâu dài</p>
+                    <div id="t6_goalListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 py-4 text-center text-xs mt-12 border-t border-slate-700">
+        <div class="container mx-auto px-4">
+            <p>© 2026 Hệ Thống Tính Điểm Toàn Diện — Dữ liệu được lưu trữ an toàn trên trình duyệt của bạn (LocalStorage).</p>
         </div>
     </footer>
 
+    <!-- JavaScript Application Logic -->
     <script>
-        // === DỮ LIỆU TOÀN HỆ THỐNG ===
-        let tongDiemCong = 0, tongDiemTru = 0;
-        let lsViec = [], lsCS = [], lsThuoc = [], lsLaoDong = [];
+        // Key lưu trữ localStorage
+        const STORAGE_KEY = 'he_thong_tinh_diem_data_v2';
 
-        // === TAB ĐIỀU HƯỚNG ===
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                document.getElementById(this.dataset.tab).classList.add('active');
-            });
-        });
+        // Cấu trúc Dữ liệu chính của Ứng dụng
+        let appData = {
+            members: [], // { id, name, note, createdAt }
+            logs: [],    // { id, memberId, memberName, tab, title, points, type: 'plus'|'minus', timestamp }
+            goals: []    // { id, memberId, memberName, title, targetPoints, isCompleted: false, completedAt }
+        };
 
-        // === TẢI DỮ LIỆU KHI MỞ TRANG ===
-        document.addEventListener('DOMContentLoaded', function() {
-            taiDuLieu();
-            capNhatTong();
-            tinhTuoiVaBMI();
-        });
+        // Khởi chạy khi load trang
+        window.onload = function() {
+            loadLocalStorageData();
+            setupTabNavigation();
+            renderAllTabViews();
+        };
 
-        // === LƯU & TẢI DỮ LIỆU ===
-        function luuDuLieu() {
-            localStorage.setItem('diemCong', tongDiemCong);
-            localStorage.setItem('diemTru', tongDiemTru);
-            localStorage.setItem('lsViec', JSON.stringify(lsViec));
-            localStorage.setItem('lsCS', JSON.stringify(lsCS));
-            localStorage.setItem('lsThuoc', JSON.stringify(lsThuoc));
-            localStorage.setItem('lsLaoDong', JSON.stringify(lsLaoDong));
-            localStorage.setItem('thongTinNguoi', JSON.stringify({
-                hoTen: document.getElementById('hoTen').value,
-                ngaySinh: document.getElementById('ngaySinh').value,
-                chieuCao: document.getElementById('chieuCao').value,
-                canNang: document.getElementById('canNang').value,
-                ghiChu: document.getElementById('ghiChuSucKhoe').value
-            }));
-        }
-
-        function taiDuLieu() {
-            tongDiemCong = parseInt(localStorage.getItem('diemCong')) || 0;
-            tongDiemTru = parseInt(localStorage.getItem('diemTru')) || 0;
-            lsViec = JSON.parse(localStorage.getItem('lsViec')) || [];
-            lsCS = JSON.parse(localStorage.getItem('lsCS')) || [];
-            lsThuoc = JSON.parse(localStorage.getItem('lsThuoc')) || [];
-            lsLaoDong = JSON.parse(localStorage.getItem('lsLaoDong')) || [];
-            
-            const tt = JSON.parse(localStorage.getItem('thongTinNguoi'));
-            if (tt) {
-                document.getElementById('hoTen').value = tt.hoTen || '';
-                document.getElementById('ngaySinh').value = tt.ngaySinh || '';
-                document.getElementById('chieuCao').value = tt.chieuCao || '';
-                document.getElementById('canNang').value = tt.canNang || '';
-                document.getElementById('ghiChuSucKhoe').value = tt.ghiChu || '';
+        // --- HÀM LƯU & TẢI DỮ LIỆU LOCALSTORAGE ---
+        function saveLocalStorageData() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+            } catch (e) {
+                showAlert('Không thể lưu dữ liệu vào bộ nhớ trình duyệt!', 'danger');
             }
         }
 
-        // === THÔNG TIN NGƯỜI — TÍNH TUỔI & BMI ===
-        function tinhTuoiVaBMI() {
-            // Tính tuổi
-            const ns = document.getElementById('ngaySinh').value;
-            if (ns) {
-                const d = new Date(ns), hn = new Date();
-                let tuoiTinh = hn.getFullYear() - d.getFullYear();
-                const m = hn.getMonth() - d.getMonth();
-                if (m < 0 || (m === 0 && hn.getDate() < d.getDate())) tuoiTinh--;
-                document.getElementById('tuoi').value = tuoiTinh >= 0 ? tuoiTinh : '';
-            }
-            // Tính BMI
-            const cc = parseFloat(document.getElementById('chieuCao').value) / 100;
-            const cn = parseFloat(document.getElementById('canNang').value);
-            if (cc > 0 && cn > 0) {
-                const bmiVal = (cn / (cc * cc)).toFixed(1);
-                document.getElementById('bmi').value = bmiVal;
+        function loadLocalStorageData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    appData = JSON.parse(saved);
+                    if (!appData.members) appData.members = [];
+                    if (!appData.logs) appData.logs = [];
+                    if (!appData.goals) appData.goals = [];
+                } catch (e) {
+                    console.error("Lỗi đọc dữ liệu local storage", e);
+                }
             } else {
-                document.getElementById('bmi').value = '';
+                // Tạo dữ liệu mẫu lần đầu nếu chưa có
+                appData.members = [
+                    { id: 'm1', name: 'Nguyễn Văn Anh', note: 'Thành viên 1', createdAt: new Date().toISOString() },
+                    { id: 'm2', name: 'Trần Thị Bình', note: 'Thành viên 2', createdAt: new Date().toISOString() }
+                ];
+                saveLocalStorageData();
             }
         }
 
-        ['ngaySinh','chieuCao','canNang'].forEach(id => {
-            document.getElementById(id).addEventListener('input', tinhTuoiVaBMI);
-        });
+        // --- ĐIỀU HƯỚNG TAB ---
+        function setupTabNavigation() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
-        function luuThongTinNguoi() {
-            luuDuLieu();
-            const tb = document.getElementById('thongBaoLuu');
-            tb.classList.remove('hidden');
-            setTimeout(() => tb.classList.add('hidden'), 2500);
+                    btn.classList.add('active');
+                    const targetTab = btn.getAttribute('data-tab');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
         }
 
-        // === CẬP NHẬT TỔNG ĐIỂM & TIẾN ĐỘ ===
-        function capNhatTong() {
-            const tong = tongDiemCong - tongDiemTru;
-            document.getElementById('tongDiemCong').textContent = tongDiemCong.toLocaleString('vi-VN');
-            document.getElementById('tongDiemTru').textContent = tongDiemTru.toLocaleString('vi-VN');
-            document.getElementById('tongDiem').textContent = tong.toLocaleString('vi-VN');
-
-            // Tiến độ các mục tiêu — giá trị trung bình
-            const mucTieu = [
-                30, 650, 3000, 6500, 8000, 5500, 10000, 8500, 16500, 15000, 25000, 19000, 32500, 70000
-            ];
-            const idMT = [
-                'mt1','mt2','mt3','mt4','mt5','mt6','mt7','mt8','mt9','mt10','mt11','mt12','mt13','mt14'
-            ];
-            for (let i = 0; i < mucTieu.length; i++) {
-                const el = document.getElementById(idMT[i]);
-                if (el) el.style.width = Math.min(100, Math.max(0, (tong / mucTieu[i]) * 100)) + '%';
+        // --- THÔNG BÁO ALERT ---
+        function showAlert(msg, type = 'success') {
+            const alertBox = document.getElementById('alertBox');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            alertBox.className = `mb-4 p-4 rounded-xl border flex items-center justify-between text-sm transition-all duration-300 `;
+            if (type === 'success') {
+                alertBox.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-800');
+            } else if (type === 'danger') {
+                alertBox.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-800');
+            } else if (type === 'warning') {
+                alertBox.classList.add('bg-amber-50', 'border-amber-200', 'text-amber-800');
             }
 
-            capNhatBang();
+            alertMessage.innerHTML = msg;
+            alertBox.classList.remove('hidden');
+
+            setTimeout(() => {
+                hideAlert();
+            }, 4000);
         }
 
-        function capNhatBang() {
-            document.getElementById('lsViec').innerHTML = lsViec.length ? lsViec.map((m,i) => hangDong(m,i,'V')).join('') : rong();
-            document.getElementById('lsCS').innerHTML = lsCS.length ? lsCS.map((m,i) => hangDong(m,i,'C')).join('') : rong();
-            document.getElementById('lsThuoc').innerHTML = lsThuoc.length ? lsThuoc.map((m,i) => hangDongThuoc(m,i)).join('') : rong();
-            document.getElementById('lsLaoDong').innerHTML = lsLaoDong.length ? lsLaoDong.map((m,i) => hangDongLD(m,i)).join('') : rong();
+        function hideAlert() {
+            document.getElementById('alertBox').classList.add('hidden');
         }
 
-        function hangDong(m, i, loai) {
-            const mau = m.diem >= 0 ? 'text-success' : 'text-danger';
-            const dau = m.diem >= 0 ? '+' : '';
-            return `<tr class="border-t hover:bg-gray-50">
-                <td class="px-3 py-2 text-xs text-gray-500">${m.tg}</td>
-                <td class="px-3 py-2">${m.ten}</td>
-                <td class="px-3 py-2 text-right font-medium ${mau}">${dau}${m.diem}</td>
-                <td class="px-3 py-2 text-center">
-                    <button onclick="xoaMuc(${i},'${loai}')" class="text-gray-40
-					                    <button onclick="xoaMuc(${i},'${loai}')" class="text-gray-400 hover:text-danger"><i class="fa fa-times"></i></button>
-                </td>
-            </tr>`;
+        // --- CÁC TÍNH TOÁN ĐIỂM SỐ CHÍNH ---
+        function calculateMemberPoints(memberId) {
+            let totalPlus = 0;
+            let totalMinus = 0;
+
+            appData.logs.filter(log => log.memberId === memberId).forEach(log => {
+                if (log.type === 'plus') {
+                    totalPlus += Number(log.points);
+                } else if (log.type === 'minus') {
+                    totalMinus += Number(log.points);
+                }
+            });
+
+            return {
+                plus: totalPlus,
+                minus: totalMinus,
+                net: totalPlus - totalMinus
+            };
         }
 
-        function hangDongThuoc(m, i) {
-            return `<tr class="border-t hover:bg-gray-50">
-                <td class="px-2 py-2 text-xs text-gray-500">${m.tg}</td>
-                <td class="px-2 py-2">${m.nguoi}</td>
-                <td class="px-2 py-2">${m.ten}</td>
-                <td class="px-2 py-2 text-center">${m.sl}</td>
-                <td class="px-2 py-2 text-right font-medium text-danger">-${m.diem}</td>
-                <td class="px-2 py-2 text-center">
-                    <button onclick="xoaMuc(${i},'T')" class="text-gray-400 hover:text-danger"><i class="fa fa-times"></i></button>
-                </td>
-            </tr>`;
+        // --- RENDER TẤT CẢ GIAO DIỆN CÁC TAB ---
+        function renderAllTabViews() {
+            updateGlobalDropdowns();
+            renderHeaderStats();
+            renderTab1Members();
+            renderTab2History();
+            renderTab3History();
+            renderTab4History();
+            renderTab5History();
+            renderTab6Goals();
         }
 
-        function hangDongLD(m, i) {
-            const mau = m.diem >= 0 ? 'text-success' : 'text-danger';
-            const dau = m.diem >= 0 ? '+' : '';
-            return `<tr class="border-t hover:bg-gray-50">
-                <td class="px-3 py-2 text-xs text-gray-500">${m.tg}</td>
-                <td class="px-3 py-2">${m.ten}</td>
-                <td class="px-3 py-2 text-right font-medium ${mau}">${dau}${m.diem}</td>
-                <td class="px-3 py-2 text-center">
-                    <button onclick="xoaMuc(${i},'L')" class="text-gray-400 hover:text-danger"><i class="fa fa-times"></i></button>
-                </td>
-            </tr>`;
+        // Cập nhật Dropdown chọn người ở tất cả các tab
+        function updateGlobalDropdowns() {
+            const selectedGlobalFilter = document.getElementById('globalMemberFilter').value || 'ALL';
+            
+            // Render Filter Dropdown ở Header
+            let filterHtml = `<option value="ALL">-- Tất cả thành viên --</option>`;
+            appData.members.forEach(m => {
+                filterHtml += `<option value="${m.id}" ${selectedGlobalFilter === m.id ? 'selected' : ''}>${m.name}</option>`;
+            });
+            document.getElementById('globalMemberFilter').innerHTML = filterHtml;
+
+            // Render Select Member Dropdowns ở các Tab Form
+            const memberSelects = document.querySelectorAll('.select-member-dropdown');
+            memberSelects.forEach(select => {
+                const currentVal = select.value;
+                if (appData.members.length === 0) {
+                    select.innerHTML = `<option value="">-- Cần thêm thành viên ở Tab 1 trước --</option>`;
+                } else {
+                    let options = `<option value="">-- Chọn thành viên --</option>`;
+                    appData.members.forEach(m => {
+                        options += `<option value="${m.id}" ${currentVal === m.id ? 'selected' : ''}>${m.name}</option>`;
+                    });
+                    select.innerHTML = options;
+                }
+            });
         }
 
-        function rong() {
-            return '<tr class="text-gray-400 text-center"><td colspan="4" class="py-3">Chưa có dữ liệu</td></tr>';
-        }
-		        // === TAB VIỆC NHÀ ===
-        function dienViec() {
-            const s = document.getElementById('chonViec').value;
-            if (!s) return;
-            const [ten, diem] = s.split(',');
-            document.getElementById('tenViec').value = ten;
-            document.getElementById('diemViec').value = parseInt(diem);
+        // Cập nhật Thống kê tổng quan ở Header
+        function renderHeaderStats() {
+            const filterId = document.getElementById('globalMemberFilter').value || 'ALL';
+            let statPlus = 0;
+            let statMinus = 0;
+
+            if (filterId === 'ALL') {
+                appData.logs.forEach(log => {
+                    if (log.type === 'plus') statPlus += Number(log.points);
+                    if (log.type === 'minus') statMinus += Number(log.points);
+                });
+            } else {
+                const pts = calculateMemberPoints(filterId);
+                statPlus = pts.plus;
+                statMinus = pts.minus;
+            }
+
+            document.getElementById('statTongCong').innerText = statPlus.toLocaleString('vi-VN');
+            document.getElementById('statTongTru').innerText = statMinus.toLocaleString('vi-VN');
+            document.getElementById('statTichLuy').innerText = (statPlus - statMinus).toLocaleString('vi-VN');
         }
 
-        function themViec() {
-            const ten = document.getElementById('tenViec').value.trim();
-            const diem = parseInt(document.getElementById('diemViec').value);
-            if (!ten || isNaN(diem)) {
-                alert('Nhập đầy đủ tên việc & số điểm!');
+        // --- LOGIC TAB 1: THÀNH VIÊN ---
+        function renderTab1Members() {
+            const tbody = document.getElementById('memberTableBody');
+            document.getElementById('memberCountBadge').innerText = `${appData.members.length} thành viên`;
+
+            if (appData.members.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400">Chưa có thành viên nào. Hãy thêm ở bảng phía trên hoặc nhập từ file TXT.</td></tr>`;
                 return;
             }
-            
-            lsViec.unshift({ ten, diem, tg: new Date().toLocaleString('vi-VN') });
-            diem >= 0 ? tongDiemCong += diem : tongDiemTru += Math.abs(diem);
-            
-            luuDuLieu(); capNhatTong();
-            document.getElementById('tenViec').value = '';
-            document.getElementById('diemViec').value = '';
-            document.getElementById('chonViec').value = '';
+
+            let html = '';
+            appData.members.forEach((m, idx) => {
+                const pts = calculateMemberPoints(m.id);
+                html += `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-3 font-semibold text-slate-500">${idx + 1}</td>
+                    <td class="p-3 font-bold text-slate-800">${escapeHtml(m.name)}</td>
+                    <td class="p-3 text-xs text-slate-500">${escapeHtml(m.note || '—')}</td>
+                    <td class="p-3 text-right font-semibold text-emerald-600">+${pts.plus.toLocaleString('vi-VN')}</td>
+                    <td class="p-3 text-right font-semibold text-rose-600">-${pts.minus.toLocaleString('vi-VN')}</td>
+                    <td class="p-3 text-right font-extrabold text-blue-700 text-base">${pts.net.toLocaleString('vi-VN')}</td>
+                    <td class="p-3 text-center space-x-1">
+                        <button onclick="suaThanhVien('${m.id}')" class="text-blue-600 hover:text-blue-800 p-1.5 rounded" title="Sửa tên">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <button onclick="xoaThanhVien('${m.id}')" class="text-rose-600 hover:text-rose-800 p-1.5 rounded" title="Xóa">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                `;
+            });
+            tbody.innerHTML = html;
         }
 
-        // === TAB CHĂM SÓC ===
-        function tinhCS() {
-            const diem = parseInt(document.getElementById('loaiCS').value);
-            const sl = parseInt(document.getElementById('slCS').value);
-            const tong = diem * sl;
-            const ten = document.querySelector('#loaiCS option:checked').text.split(' — ')[0];
-            
-            lsCS.unshift({ ten, diem: tong, tg: new Date().toLocaleString('vi-VN') });
-            tongDiemCong += tong;
-            
-            luuDuLieu(); capNhatTong();
-            alert(`✅ +${tong} điểm đã được cộng!`);
-        }
-		        // === TAB THUỐC & VẬT TƯ Y TẾ ===
-        function dienThuoc() {
-            const s = document.getElementById('loaiThuoc').value;
-            if (!s) return;
-            const [ten] = s.split(',');
-            document.getElementById('tenThuoc').value = ten;
-        }
+        function themThanhVienThuCong() {
+            const nameInput = document.getElementById('inputTenNguoi');
+            const noteInput = document.getElementById('inputGhiChuNguoi');
+            const name = nameInput.value.trim();
 
-        function themThuoc() {
-            const nguoi = document.getElementById('nguoiDungThuoc').value.trim() || 'Chưa ghi';
-            const ten = document.getElementById('tenThuoc').value.trim();
-            const sl = document.getElementById('soLuongThuoc').value.trim() || '1';
-            const tien = parseInt(document.getElementById('tienThuoc').value);
-            
-            if (!ten || isNaN(tien) || tien <= 0) {
-                alert('Nhập đầy đủ tên thuốc & số tiền!');
+            if (!name) {
+                showAlert('Vui lòng nhập họ và tên thành viên!', 'warning');
                 return;
             }
-            
-            lsThuoc.unshift({ nguoi, ten, sl, diem: tien, tg: new Date().toLocaleString('vi-VN') });
-            tongDiemTru += tien;
-            
-            luuDuLieu(); capNhatTong();
-            document.getElementById('tenThuoc').value = '';
-            document.getElementById('soLuongThuoc').value = '';
-            document.getElementById('tienThuoc').value = '';
-            alert(`✅ Đã lưu — Trừ ${tien} điểm`);
-        }
-		        // === TAB LAO ĐỘNG & MUA SẮM ===
-        function themLN() {
-            const ten = document.getElementById('ngheNghiep').value.trim();
-            const diem = parseInt(document.getElementById('diemLN').value);
-            if (!ten || isNaN(diem)) {
-                alert('Nhập đầy đủ thông tin!');
-                return;
-            }
-            
-            lsLaoDong.unshift({ ten, diem, tg: new Date().toLocaleString('vi-VN') });
-            tongDiemCong += diem;
-            
-            luuDuLieu(); capNhatTong();
-            document.getElementById('ngheNghiep').value = '';
-            document.getElementById('diemLN').value = '';
+
+            const newMember = {
+                id: 'm_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+                name: name,
+                note: noteInput.value.trim(),
+                createdAt: new Date().toISOString()
+            };
+
+            appData.members.push(newMember);
+            saveLocalStorageData();
+            renderAllTabViews();
+
+            nameInput.value = '';
+            noteInput.value = '';
+            showAlert(`Đã thêm thành viên <strong>${escapeHtml(name)}</strong> thành công!`);
         }
 
-        function muaHang() {
-            const ten = document.getElementById('tenHang').value.trim();
-            const diem = parseInt(document.getElementById('diemHang').value);
-            if (!ten || isNaN(diem) || diem <= 0) {
-                alert('Nhập đầy đủ tên hàng & số điểm!');
+        function importDanhSachTxt() {
+            const fileInput = document.getElementById('fileTxtInput');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                showAlert('Vui lòng chọn 1 file dạng .txt', 'warning');
                 return;
             }
-            
-            lsLaoDong.unshift({ ten: `Mua: ${ten}`, diem: -diem, tg: new Date().toLocaleString('vi-VN') });
-            tongDiemTru += diem;
-            
-            luuDuLieu(); capNhatTong();
-            document.getElementById('tenHang').value = '';
-            document.getElementById('diemHang').value = '';
-            alert(`✅ Đã lưu — Trừ ${diem} điểm`);
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const lines = text.split(/[\r\n,]+/);
+                let addedCount = 0;
+
+                lines.forEach(line => {
+                    const cleanName = line.trim();
+                    if (cleanName) {
+                        appData.members.push({
+                            id: 'm_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+                            name: cleanName,
+                            note: 'Nhập từ file TXT',
+                            createdAt: new Date().toISOString()
+                        });
+                        addedCount++;
+                    }
+                });
+
+                saveLocalStorageData();
+                renderAllTabViews();
+                fileInput.value = '';
+                showAlert(`Đã nhập thành công <strong>${addedCount}</strong> thành viên từ file TXT!`);
+            };
+
+            reader.readAsText(file);
         }
 
-        // === XÓA MỤC LỊCH SỬ ===
-        function xoaMuc(index, loai) {
-            if (!confirm('Xóa mục này? Không thể hoàn tác!')) return;
-            
-            let muc;
-            switch(loai) {
-                case 'V': muc = lsViec.splice(index, 1)[0]; break;
-                case 'C': muc = lsCS.splice(index, 1)[0]; break;
-                case 'T': muc = lsThuoc.splice(index, 1)[0]; tongDiemTru -= muc.diem; break;
-                case 'L': muc = lsLaoDong.splice(index, 1)[0]; 
-                    if (muc.diem >= 0) tongDiemCong -= muc.diem;
-                    else tongDiemTru -= Math.abs(muc.diem);
-                    break;
+        function importDanhSachTuTextarea() {
+            const area = document.getElementById('textareaDanhSachTen');
+            const text = area.value.trim();
+            if (!text) {
+                showAlert('Vui lòng nhập hoặc dán danh sách tên!', 'warning');
+                return;
             }
-            
-            if (loai !== 'T' && muc) {
-                if (muc.diem >= 0) tongDiemCong -= muc.diem;
-                else tongDiemTru -= Math.abs(muc.diem);
+
+            const lines = text.split(/[\r\n,]+/);
+            let addedCount = 0;
+
+            lines.forEach(line => {
+                const cleanName = line.trim();
+                if (cleanName) {
+                    appData.members.push({
+                        id: 'm_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+                        name: cleanName,
+                        note: 'Thêm hàng loạt',
+                        createdAt: new Date().toISOString()
+                    });
+                    addedCount++;
+                }
+            });
+
+            saveLocalStorageData();
+            renderAllTabViews();
+            area.value = '';
+            showAlert(`Đã thêm thành công <strong>${addedCount}</strong> thành viên!`);
+        }
+
+        function suaThanhVien(id) {
+            const member = appData.members.find(m => m.id === id);
+            if (!member) return;
+
+            const newName = prompt('Nhập tên mới cho thành viên:', member.name);
+            if (newName && newName.trim()) {
+                member.name = newName.trim();
+                // Cập nhật lại tên ở lịch sử
+                appData.logs.forEach(l => {
+                    if (l.memberId === id) l.memberName = member.name;
+                });
+                appData.goals.forEach(g => {
+                    if (g.memberId === id) g.memberName = member.name;
+                });
+
+                saveLocalStorageData();
+                renderAllTabViews();
+                showAlert('Đã cập nhật thông tin thành viên!');
             }
-            
-            luuDuLieu(); capNhatTong();
+        }
+
+        function xoaThanhVien(id) {
+            const member = appData.members.find(m => m.id === id);
+            if (!member) return;
+
+            if (confirm(`Bạn có chắc muốn xóa thành viên "${member.name}"? Tất cả lịch sử điểm liên quan sẽ bị xóa theo.`)) {
+                appData.members = appData.members.filter(m => m.id !== id);
+                appData.logs = appData.logs.filter(l => l.memberId !== id);
+                appData.goals = appData.goals.filter(g => g.memberId !== id);
+
+                saveLocalStorageData();
+                renderAllTabViews();
+                showAlert(`Đã xóa thành viên "${member.name}"`, 'danger');
+            }
+        }
+
+        // --- LOGIC TAB 2: VIỆC NHÀ & HÀNH VI ---
+        function chonMauViecTab2() {
+            const sel = document.getElementById('t2_selectMauViec');
+            if (!sel.value) return;
+            const [ten, diem] = sel.value.split('|');
+            document.getElementById('t2_tenViec').value = ten;
+            document.getElementById('t2_diemViec').value = diem;
+        }
+
+        function themGhiNhanTab2() {
+            const memberId = document.getElementById('t2_selectNguoi').value;
+            const title = document.getElementById('t2_tenViec').value.trim();
+            const points = Number(document.getElementById('t2_diemViec').value);
+
+            if (!memberId) {
+                showAlert('Vui lòng chọn thành viên thực hiện!', 'warning');
+                return;
+            }
+            if (!title) {
+                showAlert('Vui lòng nhập nội dung công việc/hành vi!', 'warning');
+                return;
+            }
+            if (isNaN(points) || points === 0) {
+                showAlert('Vui lòng nhập số điểm (+ hoặc -)!', 'warning');
+                return;
+            }
+
+            const member = appData.members.find(m => m.id === memberId);
+
+            appData.logs.push({
+                id: 'log_' + Date.now(),
+                memberId: memberId,
+                memberName: member.name,
+                tab: 2,
+                title: title,
+                points: Math.abs(points),
+                type: points > 0 ? 'plus' : 'minus',
+                timestamp: new Date().toLocaleString('vi-VN')
+            });
+
+            saveLocalStorageData();
+            renderAllTabViews();
+
+            document.getElementById('t2_tenViec').value = '';
+            document.getElementById('t2_diemViec').value = '';
+            document.getElementById('t2_selectMauViec').value = '';
+            showAlert(`Đã ghi nhận điểm cho <strong>${escapeHtml(member.name)}</strong>!`);
+        }
+
+        function renderTab2History() {
+            renderGenericHistoryTable('t2_historyBody', 2);
+        }
+
+        // --- LOGIC TAB 3: CHĂM SÓC & SỨC KHỎE ---
+        function tinhDiemGoiYT3() {
+            const baseDiem = Number(document.getElementById('t3_selectLoaiCS').value);
+            const sl = Number(document.getElementById('t3_soLuong').value) || 1;
+            document.getElementById('t3_diemTinh').value = baseDiem * sl;
+        }
+
+        function themGhiNhanTab3() {
+            const memberId = document.getElementById('t3_selectNguoi').value;
+            const selectCS = document.getElementById('t3_selectLoaiCS');
+            const title = selectCS.options[selectCS.selectedIndex].text;
+            const points = Number(document.getElementById('t3_diemTinh').value);
+            const sl = Number(document.getElementById('t3_soLuong').value) || 1;
+
+            if (!memberId) {
+                showAlert('Vui lòng chọn thành viên chăm sóc!', 'warning');
+                return;
+            }
+
+            const member = appData.members.find(m => m.id === memberId);
+
+            appData.logs.push({
+                id: 'log_' + Date.now(),
+                memberId: memberId,
+                memberName: member.name,
+                tab: 3,
+                title: `${title} (x${sl})`,
+                points: points,
+                type: 'plus',
+                timestamp: new Date().toLocaleString('vi-VN')
+            });
+
+            saveLocalStorageData();
+            renderAllTabViews();
+            showAlert(`Đã cộng <strong>+${points}</strong> điểm chăm sóc cho <strong>${escapeHtml(member.name)}</strong>!`);
+        }
+
+        function renderTab3History() {
+            renderGenericHistoryTable('t3_historyBody', 3);
+        }
+
+        // --- LOGIC TAB 4: THUỐC & VẬT TƯ Y TẾ ---
+        function themGhiNhanTab4() {
+            const memberId = document.getElementById('t4_selectNguoi').value;
+            const loaiThuoc = document.getElementById('t4_loaiThuoc').value;
+            const tenThuoc = document.getElementById('t4_tenThuoc').value.trim();
+            const soLuong = document.getElementById('t4_soLuong').value.trim() || '1';
+            const chiPhi = Number(document.getElementById('t4_chiPhi').value);
+
+            if (!memberId) {
+                showAlert('Vui lòng chọn thành viên chi mua!', 'warning');
+                return;
+            }
+            if (!tenThuoc) {
+                showAlert('Vui lòng nhập tên thuốc / vật tư!', 'warning');
+                return;
+            }
+            if (isNaN(chiPhi) || chiPhi <= 0) {
+                showAlert('Vui lòng nhập chi phí quy đổi điểm trừ hợp lệ!', 'warning');
+                return;
+            }
+
+            const member = appData.members.find(m => m.id === memberId);
+
+            appData.logs.push({
+                id: 'log_' + Date.now(),
+                memberId: memberId,
+                memberName: member.name,
+                tab: 4,
+                title: `[${loaiThuoc}] ${tenThuoc} (${soLuong})`,
+                points: chiPhi,
+                type: 'minus',
+                timestamp: new Date().toLocaleString('vi-VN')
+            });
+
+            saveLocalStorageData();
+            renderAllTabViews();
+
+            document.getElementById('t4_tenThuoc').value = '';
+            document.getElementById('t4_soLuong').value = '';
+            document.getElementById('t4_chiPhi').value = '';
+            showAlert(`Đã ghi nhận mua thuốc & trừ <strong>-${chiPhi}</strong> điểm của <strong>${escapeHtml(member.name)}</strong>!`);
+        }
+
+        function renderTab4History() {
+            renderGenericHistoryTable('t4_historyBody', 4);
+        }
+
+        // --- LOGIC TAB 5: LAO ĐỘNG & MUA SẮM ---
+        function themLaoDongTab5() {
+            const memberId = document.getElementById('t5_selectNguoiLaoDong').value;
+            const title = document.getElementById('t5_tenCongViec').value.trim();
+            const points = Number(document.getElementById('t5_diemLaoDong').value);
+
+            if (!memberId || !title || isNaN(points) || points <= 0) {
+                showAlert('Vui lòng nhập đầy đủ thông tin lao động hợp lệ!', 'warning');
+                return;
+            }
+
+            const member = appData.members.find(m => m.id === memberId);
+
+            appData.logs.push({
+                id: 'log_' + Date.now(),
+                memberId: memberId,
+                memberName: member.name,
+                tab: 5,
+                title: `[Lao động] ${title}`,
+                points: points,
+                type: 'plus',
+                timestamp: new Date().toLocaleString('vi-VN')
+            });
+
+            saveLocalStorageData();
+            renderAllTabViews();
+
+            document.getElementById('t5_tenCongViec').value = '';
+            document.getElementById('t5_diemLaoDong').value = '';
+            showAlert(`Đã cộng <strong>+${points}</strong> điểm lao động cho <strong>${escapeHtml(member.name)}</strong>!`);
+        }
+
+        function themMuaSamTab5() {
+            const memberId = document.getElementById('t5_selectNguoiMuaSam').value;
+            const title = document.getElementById('t5_tenMatHang').value.trim();
+            const points = Number(document.getElementById('t5_diemMuaSam').value);
+
+            if (!memberId || !title || isNaN(points) || points <= 0) {
+                showAlert('Vui lòng nhập đầy đủ thông tin mua sắm hợp lệ!', 'warning');
+                return;
+            }
+
+            const member = appData.members.find(m => m.id === memberId);
+
+            appData.logs.push({
+                id: 'log_' + Date.now(),
+                memberId: memberId,
+                memberName: member.name,
+                tab: 5,
+                title: `[Mua sắm] ${title}`,
+                points: points,
+                type: 'minus',
+                timestamp: new Date().toLocaleString('vi-VN')
+            });
+
+            saveLocalStorageData();
+            renderAllTabViews();
+
+            document.getElementById('t5_tenMatHang').value = '';
+            document.getElementById('t5_diemMuaSam').value = '';
+            showAlert(`Đã trừ <strong>-${points}</strong> điểm mua sắm của <strong>${escapeHtml(member.name)}</strong>!`);
+        }
+
+        function renderTab5History() {
+            renderGenericHistoryTable('t5_historyBody', 5);
+        }
+
+        // --- HÀM RENDER BẢNG LỊCH SỬ CHUNG CHO CÁC TAB ---
+        function renderGenericHistoryTable(tbodyId, tabNum) {
+            const tbody = document.getElementById(tbodyId);
+            const globalFilter = document.getElementById('globalMemberFilter').value || 'ALL';
+
+            let logs = appData.logs.filter(l => l.tab === tabNum);
+            if (globalFilter !== 'ALL') {
+                logs = logs.filter(l => l.memberId === globalFilter);
+            }
+
+            // Sắp xếp mới nhất lên đầu
+            logs.sort((a, b) => b.id.localeCompare(a.id));
+
+            if (logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-slate-400">Chưa có lịch sử dữ liệu nào.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            logs.forEach(l => {
+                const isPlus = l.type === 'plus';
+                html += `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-2.5 text-xs text-slate-500">${l.timestamp}</td>
+                    <td class="p-2.5 font-semibold text-slate-800">${escapeHtml(l.memberName)}</td>
+                    <td class="p-2.5 text-slate-700">${escapeHtml(l.title)}</td>
+                    ${tabNum === 5 ? `<td class="p-2.5 text-xs">${isPlus ? '<span class="text-purple-600 bg-purple-50 px-2 py-0.5 rounded font-bold">Lao động</span>' : '<span class="text-amber-600 bg-amber-50 px-2 py-0.5 rounded font-bold">Mua sắm</span>'}</td>` : ''}
+                    ${tabNum === 3 ? `<td class="p-2.5 text-center text-xs">Chi tiết</td>` : ''}
+                    <td class="p-2.5 text-right font-bold ${isPlus ? 'text-emerald-600' : 'text-rose-600'}">
+                        ${isPlus ? '+' : '-'}${Number(l.points).toLocaleString('vi-VN')}
+                    </td>
+                    <td class="p-2.5 text-center">
+                        <button onclick="xoaLog('${l.id}')" class="text-slate-400 hover:text-rose-600 p-1" title="Xóa bản ghi">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </td>
+                </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function xoaLog(logId) {
+            if (confirm('Bạn có chắc muốn xóa bản ghi lịch sử này?')) {
+                appData.logs = appData.logs.filter(l => l.id !== logId);
+                saveLocalStorageData();
+                renderAllTabViews();
+                showAlert('Đã xóa bản ghi!');
+            }
+        }
+
+        // --- LOGIC TAB 6: MỤC TIÊU & ĐỔI THƯỞNG ---
+        function themMucTieuTab6() {
+            const memberId = document.getElementById('t6_selectNguoi').value;
+            const title = document.getElementById('t6_tenMucTieu').value.trim();
+            const targetPoints = Number(document.getElementById('t6_diemCanDat').value);
+
+            if (!memberId || !title || isNaN(targetPoints) || targetPoints <= 0) {
+                showAlert('Vui lòng điền đầy đủ thông tin mục tiêu hợp lệ!', 'warning');
+                return;
+            }
+
+            const member = appData.members.find(m => m.id === memberId);
+
+            appData.goals.push({
+                id: 'goal_' + Date.now(),
+                memberId: memberId,
+                memberName: member.name,
+                title: title,
+                targetPoints: targetPoints,
+                isCompleted: false,
+                createdAt: new Date().toLocaleDateString('vi-VN')
+            });
+
+            saveLocalStorageData();
+            renderAllTabViews();
+
+            document.getElementById('t6_tenMucTieu').value = '';
+            document.getElementById('t6_diemCanDat').value = '';
+            showAlert(`Đã thêm mục tiêu mới cho <strong>${escapeHtml(member.name)}</strong>!`);
+        }
+
+        function renderTab6Goals() {
+            const container = document.getElementById('t6_goalListContainer');
+            const globalFilter = document.getElementById('globalMemberFilter').value || 'ALL';
+
+            let goals = appData.goals;
+            if (globalFilter !== 'ALL') {
+                goals = goals.filter(g => g.memberId === globalFilter);
+            }
+
+            if (goals.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-8 text-slate-400">Chưa có mục tiêu nào được tạo. Hãy tạo mục tiêu đầu tiên phía trên.</div>`;
+                return;
+            }
+
+            let html = '';
+            goals.forEach(g => {
+                const memberPts = calculateMemberPoints(g.memberId);
+                const currentNet = memberPts.net;
+                const percent = Math.min(100, Math.max(0, Math.round((currentNet / g.targetPoints) * 100)));
+                
+                html += `
+                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 flex flex-col justify-between space-y-3 relative overflow-hidden">
+                    ${g.isCompleted ? '<div class="absolute -right-8 -top-8 bg-emerald-500 text-white text-[10px] uppercase font-bold py-1 px-8 rotate-45 shadow">Hoàn thành</div>' : ''}
+                    <div>
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-semibold text-blue-600 uppercase tracking-wider">${escapeHtml(g.memberName)}</span>
+                            <button onclick="xoaMucTieu('${g.id}')" class="text-slate-400 hover:text-rose-600 text-xs"><i class="fa fa-trash"></i></button>
+                        </div>
+                        <h5 class="font-bold text-slate-800 text-base">${escapeHtml(g.title)}</h5>
+                        <p class="text-xs text-slate-500 mt-0.5">Cần đạt: <strong class="text-amber-700">${g.targetPoints.toLocaleString('vi-VN')} điểm</strong></p>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span class="text-slate-600">Hiện có: ${currentNet.toLocaleString('vi-VN')} đ</span>
+                            <span class="${percent >= 100 ? 'text-emerald-600 font-bold' : 'text-slate-500'}">${percent}%</span>
+                        </div>
+                        <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                            <div class="h-2.5 ${percent >= 100 ? 'bg-emerald-500' : 'bg-blue-600'} transition-all duration-500" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-200 flex justify-between items-center">
+                        <span class="text-[11px] text-slate-400">Ngày tạo: ${g.createdAt}</span>
+                        ${!g.isCompleted ? `
+                            <button onclick="doiThuongHoanThanh('${g.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+                                <i class="fa fa-gift"></i> Đổi thưởng & Trừ điểm
+                            </button>
+                        ` : `
+                            <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                                <i class="fa fa-check-circle"></i> Đã nhận thưởng
+                            </span>
+                        `}
+                    </div>
+                </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function doiThuongHoanThanh(goalId) {
+            const goal = appData.goals.find(g => g.id === goalId);
+            if (!goal) return;
+
+            const pts = calculateMemberPoints(goal.memberId);
+            if (pts.net < goal.targetPoints) {
+                if (!confirm(`Thành viên ${goal.memberName} hiện chưa đủ điểm (${pts.net}/${goal.targetPoints}). Bạn vẫn muốn trừ điểm và duyệt đổi thưởng?`)) {
+                    return;
+                }
+            } else {
+                if (!confirm(`Xác nhận đổi thưởng mục tiêu "${goal.title}" và trừ ${goal.targetPoints} điểm tích lũy của ${goal.memberName}?`)) {
+                    return;
+                }
+            }
+
+            // Trừ điểm
+            appData.logs.push({
+                id: 'log_' + Date.now(),
+                memberId: goal.memberId,
+                memberName: goal.memberName,
+                tab: 6,
+                title: `[Đổi thưởng] ${goal.title}`,
+                points: goal.targetPoints,
+                type: 'minus',
+                timestamp: new Date().toLocaleString('vi-VN')
+            });
+
+            goal.isCompleted = true;
+            goal.completedAt = new Date().toLocaleString('vi-VN');
+
+            saveLocalStorageData();
+            renderAllTabViews();
+            showAlert(`Chúc mừng! Đã đổi thưởng mục tiêu "${escapeHtml(goal.title)}" thành công!`);
+        }
+
+        function xoaMucTieu(goalId) {
+            if (confirm('Bạn có chắc muốn xóa mục tiêu này?')) {
+                appData.goals = appData.goals.filter(g => g.id !== goalId);
+                saveLocalStorageData();
+                renderAllTabViews();
+                showAlert('Đã xóa mục tiêu!');
+            }
+        }
+
+        // --- XUẤT/NHẬP SAO LƯU DỮ LIỆU (JSON) & XÓA TOÀN BỘ ---
+        function exportDataJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", `SaoLuu_HeThongTinhDiem_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(dlAnchorElem);
+            dlAnchorElem.click();
+            dlAnchorElem.remove();
+        }
+
+        function importDataJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported && Array.isArray(imported.members)) {
+                        appData = imported;
+                        saveLocalStorageData();
+                        renderAllTabViews();
+                        showAlert('Đã khôi phục toàn bộ dữ liệu từ file sao lưu thành công!');
+                    } else {
+                        showAlert('Cấu trúc file sao lưu JSON không hợp lệ!', 'danger');
+                    }
+                } catch (err) {
+                    showAlert('File không đúng định dạng JSON!', 'danger');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function clearAllDataConfirm() {
+            if (confirm('CẢNH BÁO: Bạn có chắc chắn muốn XÓA TOÀN BỘ thành viên, điểm số và lịch sử ứng dụng?')) {
+                appData = { members: [], logs: [], goals: [] };
+                saveLocalStorageData();
+                renderAllTabViews();
+                showAlert('Đã xóa toàn bộ dữ liệu ứng dụng!', 'danger');
+            }
+        }
+
+        // Utility Escape HTML
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
         }
     </script>
 </body>
